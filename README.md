@@ -11,4 +11,5 @@ The repository was created by [George Drakos](https://www.linkedin.com/in/george
 
 * Install via [ABAPGit](http://abapgit.org)
 * ABAP Cloud/Clean Core compatibility
+* Based on class cl_bali_log which is released for Cloud Development
 
