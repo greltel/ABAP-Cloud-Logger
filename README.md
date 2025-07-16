@@ -13,3 +13,6 @@ The repository was created by [George Drakos](https://www.linkedin.com/in/george
 * ABAP Cloud/Clean Core compatibility
 * Based on class cl_bali_log which is released for Cloud Development
 
+## To Be
+
+*Replace syst Variables in method LOG_SYST_ADD with xco_message->value
