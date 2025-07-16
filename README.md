@@ -7,11 +7,8 @@ This project is licensed under the [MIT License](https://github.com/greltel/ABAP
 ## Contributors-Developers
 The repository was created by [George Drakos](https://www.linkedin.com/in/george-drakos/).
 
-## Design Goals
+## Design Goals/Features
 
-* Copy-Paste Installation
-* Code based on New ABAP Syntax. 7.50 and later
-* Comments throughout the Code(when necessary)
-* Public repository
-* No Text Elements-Selection Texts must be created.
+* Install via [ABAPGit](http://abapgit.org)
+* ABAP Cloud/Clean Core compatibility
 
