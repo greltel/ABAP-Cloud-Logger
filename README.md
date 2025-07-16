@@ -5,7 +5,7 @@ ABAP Logger Following Clean Core Principles
 This project is licensed under the [MIT License](https://github.com/greltel/ABAP-Cloud-Logger/blob/main/LICENSE).
 
 ## Contributors-Developers
-The repository was created by [George Drakos](https://github.com/greltel/ABAP-Cloud-Logger/blob/main/LICENSE](https://www.linkedin.com/in/george-drakos/)).
+The repository was created by [George Drakos](https://github.com/greltel/ABAP-Cloud-Logger/blob/main/LICENSE](https://www.linkedin.com/in/george-drakos/).
 
 ## Design Goals
 
