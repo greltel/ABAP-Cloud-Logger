@@ -15,4 +15,4 @@ The repository was created by [George Drakos](https://www.linkedin.com/in/george
 
 ## To Be
 
-*Replace syst Variables in method LOG_SYST_ADD with xco_message->value
+* Replace syst Variables in method LOG_SYST_ADD with xco_message->value
