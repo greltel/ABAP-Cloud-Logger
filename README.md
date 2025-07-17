@@ -17,4 +17,4 @@ The repository was created by [George Drakos](https://www.linkedin.com/in/george
 ## To Do
 
 * Replace syst Variables in method LOG_SYST_ADD with xco_message->value
-* Replace BAPI_MESSAGE_GETDETAIL
+* Replace BAPI_MESSAGE_GETDETAIL with xco_cp=>message
