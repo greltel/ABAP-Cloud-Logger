@@ -12,7 +12,9 @@ The repository was created by [George Drakos](https://www.linkedin.com/in/george
 * Install via [ABAPGit](http://abapgit.org)
 * ABAP Cloud/Clean Core compatibility
 * Based on class cl_bali_log which is released for Cloud Development
+* Based on Multiton Design Pattern
 
 ## To Do
 
 * Replace syst Variables in method LOG_SYST_ADD with xco_message->value
+* Replace BAPI_MESSAGE_GETDETAIL
