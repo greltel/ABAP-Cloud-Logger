@@ -18,3 +18,4 @@ The repository was created by [George Drakos](https://www.linkedin.com/in/george
 
 * Restructure with Interface
 * Add Exception Class
+* Add Unit Testing
