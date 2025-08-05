@@ -15,3 +15,6 @@ The repository was created by [George Drakos](https://www.linkedin.com/in/george
 * Based on Multiton Design Pattern
 
 ## To Do
+
+* Restructure with Interface
+* Add Exception Class
