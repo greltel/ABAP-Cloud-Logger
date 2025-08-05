@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_MSAG" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <T100A>
+    <ARBGB>Z_CLOUD_LOGGER</ARBGB>
+    <MASTERLANG>E</MASTERLANG>
+   </T100A>
+   <T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>Z_CLOUD_LOGGER</ARBGB>
+     <MSGNR>000</MSGNR>
+     <TEXT>*** ABAP CLOUD Logger ***</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>Z_CLOUD_LOGGER</ARBGB>
+     <MSGNR>001</MSGNR>
+     <TEXT>&amp;1&amp;2&amp;3&amp;4</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>Z_CLOUD_LOGGER</ARBGB>
+     <MSGNR>002</MSGNR>
+     <TEXT>No access to Application Log, check release state or relation.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>Z_CLOUD_LOGGER</ARBGB>
+     <MSGNR>003</MSGNR>
+     <TEXT>Log object could not be created</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>Z_CLOUD_LOGGER</ARBGB>
+     <MSGNR>004</MSGNR>
+     <TEXT>Error while adding object to Log</TEXT>
+    </T100>
+   </T100>
+  </asx:values>
+ </asx:abap>
+</abapGit>
