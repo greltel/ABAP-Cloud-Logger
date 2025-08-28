@@ -75,10 +75,10 @@ interface ZIF_CLOUD_LOGGER
       !IV_MSGTY type SYMSGTY default C_DEFAULT_MESSAGE_ATTRIBUTES-TYPE
       !IV_MSGID type SYMSGID default C_DEFAULT_MESSAGE_ATTRIBUTES-ID
       !IV_MSGNO type SYMSGNO default C_DEFAULT_MESSAGE_ATTRIBUTES-NO
-      !IV_MSGV1 type SYMSGV
-      !IV_MSGV2 type SYMSGV
-      !IV_MSGV3 type SYMSGV
-      !IV_MSGV4 type SYMSGV .
+      !IV_MSGV1 type SYMSGV optional
+      !IV_MSGV2 type SYMSGV optional
+      !IV_MSGV3 type SYMSGV optional
+      !IV_MSGV4 type SYMSGV optional .
   methods LOG_SYST_ADD .
   methods LOG_EXCEPTION_ADD
     importing

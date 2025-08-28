@@ -450,7 +450,7 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
                                                         variable_3 = iv_msgv3
                                                         variable_4 = iv_msgv4 ).
 
-        me->lo_log_handle->add_item( lo_item  ).
+        me->lo_log_handle->add_item( lo_item ).
 
         me->add_message_internal_log( iv_msgid = iv_msgid
                                       iv_msgno = iv_msgno
