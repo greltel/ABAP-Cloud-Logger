@@ -16,4 +16,4 @@ The repository was created by [George Drakos](https://www.linkedin.com/in/george
 
 ## To Do
 
-* Add Unit Testing
+* Unit Testing
