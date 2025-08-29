@@ -13,7 +13,3 @@ The repository was created by [George Drakos](https://www.linkedin.com/in/george
 * ABAP Cloud/Clean Core compatibility.Passed SCI check variant S4HANA_READINESS_2023
 * Based on class cl_bali_log which is released for Cloud Development
 * Based on Multiton Design Pattern
-
-## To Do
-
-* Unit Testing
