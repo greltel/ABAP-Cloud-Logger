@@ -15,7 +15,7 @@ interface ZIF_CLOUD_LOGGER
       message   TYPE bapiret2-message,
       type      TYPE symsgty,
       user_name TYPE syuname,
-      date      TYPE datum,
+      date      TYPE xsddate_d,
       time      TYPE uzeit,
       item      TYPE REF TO if_bali_item_setter,
     END OF t_log_messages .
@@ -26,7 +26,7 @@ interface ZIF_CLOUD_LOGGER
       log_object    TYPE        cl_bali_header_setter=>ty_object,
       log_subobject TYPE        cl_bali_header_setter=>ty_subobject,
       extnumber     TYPE        cl_bali_header_setter=>ty_external_id,
-      logger        TYPE REF TO ZIF_CLOUD_LOGGER,
+      logger        TYPE REF TO zif_cloud_logger,
     END OF t_logger_instance .
   types:
     tt_logger_instances TYPE STANDARD TABLE OF t_logger_instance WITH KEY log_object log_subobject extnumber .
@@ -82,7 +82,7 @@ interface ZIF_CLOUD_LOGGER
   methods LOG_SYST_ADD .
   methods LOG_EXCEPTION_ADD
     importing
-      !IV_SEVERITY type SYMSGTY
+      !IV_SEVERITY type SYMSGTY default C_DEFAULT_MESSAGE_ATTRIBUTES-TYPE
       !IV_EXCEPTION type ref to CX_ROOT .
   methods LOG_BAPIRET2_TABLE_ADD
     importing

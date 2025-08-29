@@ -1,127 +1,127 @@
-class ZCL_CLOUD_LOGGER definition
-  public
-  create private .
+CLASS zcl_cloud_logger DEFINITION
+  PUBLIC
+  CREATE PRIVATE .
 
-public section.
+  PUBLIC SECTION.
 
-  interfaces ZIF_CLOUD_LOGGER .
+    INTERFACES zif_cloud_logger .
 
-  aliases C_DEFAULT_MESSAGE_ATTRIBUTES
-    for ZIF_CLOUD_LOGGER~C_DEFAULT_MESSAGE_ATTRIBUTES .
-  aliases C_MESSAGE_TYPE
-    for ZIF_CLOUD_LOGGER~C_MESSAGE_TYPE .
-  aliases C_SELECT_OPTIONS
-    for ZIF_CLOUD_LOGGER~C_SELECT_OPTIONS .
-  aliases GET_HANDLE
-    for ZIF_CLOUD_LOGGER~GET_HANDLE .
-  aliases GET_LOG_HANDLE
-    for ZIF_CLOUD_LOGGER~GET_LOG_HANDLE .
-  aliases GET_MESSAGES
-    for ZIF_CLOUD_LOGGER~GET_MESSAGES .
-  aliases GET_MESSAGES_AS_BAPIRET2
-    for ZIF_CLOUD_LOGGER~GET_MESSAGES_AS_BAPIRET2 .
-  aliases GET_MESSAGES_FLAT
-    for ZIF_CLOUD_LOGGER~GET_MESSAGES_FLAT .
-  aliases GET_MESSAGES_RAP
-    for ZIF_CLOUD_LOGGER~GET_MESSAGES_RAP .
-  aliases GET_MESSAGE_COUNT
-    for ZIF_CLOUD_LOGGER~GET_MESSAGE_COUNT .
-  aliases LOG_BAPIRET2_STRUCTURE_ADD
-    for ZIF_CLOUD_LOGGER~LOG_BAPIRET2_STRUCTURE_ADD .
-  aliases LOG_BAPIRET2_TABLE_ADD
-    for ZIF_CLOUD_LOGGER~LOG_BAPIRET2_TABLE_ADD .
-  aliases LOG_CONTAINS_ERROR
-    for ZIF_CLOUD_LOGGER~LOG_CONTAINS_ERROR .
-  aliases LOG_CONTAINS_MESSAGES
-    for ZIF_CLOUD_LOGGER~LOG_CONTAINS_MESSAGES .
-  aliases LOG_CONTAINS_WARNING
-    for ZIF_CLOUD_LOGGER~LOG_CONTAINS_WARNING .
-  aliases LOG_EXCEPTION_ADD
-    for ZIF_CLOUD_LOGGER~LOG_EXCEPTION_ADD .
-  aliases LOG_IS_EMPTY
-    for ZIF_CLOUD_LOGGER~LOG_IS_EMPTY .
-  aliases LOG_MESSAGE_ADD
-    for ZIF_CLOUD_LOGGER~LOG_MESSAGE_ADD .
-  aliases LOG_STRING_ADD
-    for ZIF_CLOUD_LOGGER~LOG_STRING_ADD .
-  aliases LOG_SYST_ADD
-    for ZIF_CLOUD_LOGGER~LOG_SYST_ADD .
-  aliases MERGE_LOGS
-    for ZIF_CLOUD_LOGGER~MERGE_LOGS .
-  aliases RESET_APPL_LOG
-    for ZIF_CLOUD_LOGGER~RESET_APPL_LOG .
-  aliases SAVE_APPLICATION_LOG
-    for ZIF_CLOUD_LOGGER~SAVE_APPLICATION_LOG .
-  aliases SEARCH_MESSAGE
-    for ZIF_CLOUD_LOGGER~SEARCH_MESSAGE .
-  aliases FLAT_MESSAGE
-    for ZIF_CLOUD_LOGGER~FLAT_MESSAGE .
-  aliases TT_BAPIRET2
-    for ZIF_CLOUD_LOGGER~TT_BAPIRET2 .
-  aliases TT_FLAT_MESSAGES
-    for ZIF_CLOUD_LOGGER~TT_FLAT_MESSAGES .
-  aliases TT_LOGGER_INSTANCES
-    for ZIF_CLOUD_LOGGER~TT_LOGGER_INSTANCES .
-  aliases TT_LOG_MESSAGES
-    for ZIF_CLOUD_LOGGER~TT_LOG_MESSAGES .
-  aliases TT_RAP_MESSAGES
-    for ZIF_CLOUD_LOGGER~TT_RAP_MESSAGES .
-  aliases T_LOGGER_INSTANCE
-    for ZIF_CLOUD_LOGGER~T_LOGGER_INSTANCE .
-  aliases T_LOG_MESSAGES
-    for ZIF_CLOUD_LOGGER~T_LOG_MESSAGES .
+    ALIASES c_default_message_attributes
+      FOR zif_cloud_logger~c_default_message_attributes .
+    ALIASES c_message_type
+      FOR zif_cloud_logger~c_message_type .
+    ALIASES c_select_options
+      FOR zif_cloud_logger~c_select_options .
+    ALIASES get_handle
+      FOR zif_cloud_logger~get_handle .
+    ALIASES get_log_handle
+      FOR zif_cloud_logger~get_log_handle .
+    ALIASES get_messages
+      FOR zif_cloud_logger~get_messages .
+    ALIASES get_messages_as_bapiret2
+      FOR zif_cloud_logger~get_messages_as_bapiret2 .
+    ALIASES get_messages_flat
+      FOR zif_cloud_logger~get_messages_flat .
+    ALIASES get_messages_rap
+      FOR zif_cloud_logger~get_messages_rap .
+    ALIASES get_message_count
+      FOR zif_cloud_logger~get_message_count .
+    ALIASES log_bapiret2_structure_add
+      FOR zif_cloud_logger~log_bapiret2_structure_add .
+    ALIASES log_bapiret2_table_add
+      FOR zif_cloud_logger~log_bapiret2_table_add .
+    ALIASES log_contains_error
+      FOR zif_cloud_logger~log_contains_error .
+    ALIASES log_contains_messages
+      FOR zif_cloud_logger~log_contains_messages .
+    ALIASES log_contains_warning
+      FOR zif_cloud_logger~log_contains_warning .
+    ALIASES log_exception_add
+      FOR zif_cloud_logger~log_exception_add .
+    ALIASES log_is_empty
+      FOR zif_cloud_logger~log_is_empty .
+    ALIASES log_message_add
+      FOR zif_cloud_logger~log_message_add .
+    ALIASES log_string_add
+      FOR zif_cloud_logger~log_string_add .
+    ALIASES log_syst_add
+      FOR zif_cloud_logger~log_syst_add .
+    ALIASES merge_logs
+      FOR zif_cloud_logger~merge_logs .
+    ALIASES reset_appl_log
+      FOR zif_cloud_logger~reset_appl_log .
+    ALIASES save_application_log
+      FOR zif_cloud_logger~save_application_log .
+    ALIASES search_message
+      FOR zif_cloud_logger~search_message .
+    ALIASES flat_message
+      FOR zif_cloud_logger~flat_message .
+    ALIASES tt_bapiret2
+      FOR zif_cloud_logger~tt_bapiret2 .
+    ALIASES tt_flat_messages
+      FOR zif_cloud_logger~tt_flat_messages .
+    ALIASES tt_logger_instances
+      FOR zif_cloud_logger~tt_logger_instances .
+    ALIASES tt_log_messages
+      FOR zif_cloud_logger~tt_log_messages .
+    ALIASES tt_rap_messages
+      FOR zif_cloud_logger~tt_rap_messages .
+    ALIASES t_logger_instance
+      FOR zif_cloud_logger~t_logger_instance .
+    ALIASES t_log_messages
+      FOR zif_cloud_logger~t_log_messages .
 
-  class-methods GET_INSTANCE
-    importing
-      !IV_OBJECT type CL_BALI_HEADER_SETTER=>TY_OBJECT optional
-      !IV_SUBOBJECT type CL_BALI_HEADER_SETTER=>TY_SUBOBJECT optional
-      !IV_EXT_NUMBER type CL_BALI_HEADER_SETTER=>TY_EXTERNAL_ID optional
-      !IV_DB_SAVE type ABAP_BOOLEAN default ABAP_FALSE
-      !IV_EXPIRY_DATE type DATUM optional
-    returning
-      value(RE_LOGGER_INSTANCE) type ref to ZIF_CLOUD_LOGGER .
+    CLASS-METHODS get_instance
+      IMPORTING
+        !iv_object                TYPE cl_bali_header_setter=>ty_object OPTIONAL
+        !iv_subobject             TYPE cl_bali_header_setter=>ty_subobject OPTIONAL
+        !iv_ext_number            TYPE cl_bali_header_setter=>ty_external_id OPTIONAL
+        !iv_db_save               TYPE abap_boolean DEFAULT abap_false
+        !iv_expiry_date           TYPE xsddate_d OPTIONAL
+      RETURNING
+        VALUE(re_logger_instance) TYPE REF TO zif_cloud_logger .
   PROTECTED SECTION.
-private section.
+  PRIVATE SECTION.
 
-  class-data LT_LOGGER_INSTANCES type TT_LOGGER_INSTANCES .
-  data LO_LOG_HANDLE type ref to IF_BALI_LOG .
-  data LO_HEADER type ref to IF_BALI_HEADER_SETTER .
-  data LT_LOG_MESSAGES type TT_LOG_MESSAGES .
-  data LV_DB_SAVE type ABAP_BOOLEAN .
+    CLASS-DATA lt_logger_instances TYPE tt_logger_instances .
+    DATA lo_log_handle TYPE REF TO if_bali_log .
+    DATA lo_header TYPE REF TO if_bali_header_setter .
+    DATA lt_log_messages TYPE tt_log_messages .
+    DATA lv_db_save TYPE abap_boolean .
 
-  methods CONSTRUCTOR
-    importing
-      !IV_OBJECT type CL_BALI_HEADER_SETTER=>TY_OBJECT optional
-      !IV_SUBOBJECT type CL_BALI_HEADER_SETTER=>TY_SUBOBJECT optional
-      !IV_EXT_NUMBER type CL_BALI_HEADER_SETTER=>TY_EXTERNAL_ID optional
-      !IV_DB_SAVE type ABAP_BOOLEAN default ABAP_TRUE
-      !IV_EXPIRY_DATE type DATUM optional .
-  methods ADD_MESSAGE_INTERNAL_LOG
-    importing
-      !IV_MSGID type SYMSGID default C_DEFAULT_MESSAGE_ATTRIBUTES-ID
-      !IV_MSGNO type SYMSGNO default C_DEFAULT_MESSAGE_ATTRIBUTES-NO
-      !IV_MSGTY type SYMSGTY default C_DEFAULT_MESSAGE_ATTRIBUTES-TYPE
-      !IV_MSGV1 type SYMSGV
-      !IV_MSGV2 type SYMSGV optional
-      !IV_MSGV3 type SYMSGV optional
-      !IV_MSGV4 type SYMSGV optional
-      !IR_ITEM type ref to IF_BALI_ITEM_SETTER optional .
-  class-methods GET_LONG_TEXT_FROM_MESSAGE
-    importing
-      !IV_MSGID type SYMSGID default C_DEFAULT_MESSAGE_ATTRIBUTES-ID
-      !IV_MSGNO type SYMSGNO default C_DEFAULT_MESSAGE_ATTRIBUTES-NO
-      !IV_MSGTY type SYMSGTY default C_DEFAULT_MESSAGE_ATTRIBUTES-TYPE
-      !IV_MSGV1 type SYMSGV
-      !IV_MSGV2 type SYMSGV
-      !IV_MSGV3 type SYMSGV
-      !IV_MSGV4 type SYMSGV
-    returning
-      value(RE_LONG_TEXT) type BAPIRET2-MESSAGE .
-  class-methods GET_STRING_FROM_MESSAGE
-    importing
-      !IM_MESSAGE type SYMSG
-    returning
-      value(RESULT) type FLAT_MESSAGE .
+    METHODS constructor
+      IMPORTING
+        !iv_object      TYPE cl_bali_header_setter=>ty_object OPTIONAL
+        !iv_subobject   TYPE cl_bali_header_setter=>ty_subobject OPTIONAL
+        !iv_ext_number  TYPE cl_bali_header_setter=>ty_external_id OPTIONAL
+        !iv_db_save     TYPE abap_boolean DEFAULT abap_true
+        !iv_expiry_date TYPE xsddate_d OPTIONAL .
+    METHODS add_message_internal_log
+      IMPORTING
+        !iv_msgid TYPE symsgid DEFAULT c_default_message_attributes-id
+        !iv_msgno TYPE symsgno DEFAULT c_default_message_attributes-no
+        !iv_msgty TYPE symsgty DEFAULT c_default_message_attributes-type
+        !iv_msgv1 TYPE symsgv
+        !iv_msgv2 TYPE symsgv OPTIONAL
+        !iv_msgv3 TYPE symsgv OPTIONAL
+        !iv_msgv4 TYPE symsgv OPTIONAL
+        !ir_item  TYPE REF TO if_bali_item_setter OPTIONAL .
+    CLASS-METHODS get_long_text_from_message
+      IMPORTING
+        !iv_msgid           TYPE symsgid DEFAULT c_default_message_attributes-id
+        !iv_msgno           TYPE symsgno DEFAULT c_default_message_attributes-no
+        !iv_msgty           TYPE symsgty DEFAULT c_default_message_attributes-type
+        !iv_msgv1           TYPE symsgv
+        !iv_msgv2           TYPE symsgv
+        !iv_msgv3           TYPE symsgv
+        !iv_msgv4           TYPE symsgv
+      RETURNING
+        VALUE(re_long_text) TYPE bapiret2-message .
+    CLASS-METHODS get_string_from_message
+      IMPORTING
+        !im_message   TYPE symsg
+      RETURNING
+        VALUE(result) TYPE flat_message .
 ENDCLASS.
 
 
@@ -240,18 +240,18 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
   ENDMETHOD.
 
 
-  method ZIF_CLOUD_LOGGER~GET_LOG_HANDLE.
+  METHOD zif_cloud_logger~get_log_handle.
 
     RETURN me->lo_log_handle.
 
-  endmethod.
+  ENDMETHOD.
 
 
-  method ZIF_CLOUD_LOGGER~GET_MESSAGES.
+  METHOD zif_cloud_logger~get_messages.
 
     RETURN me->lt_log_messages.
 
-  endmethod.
+  ENDMETHOD.
 
 
   METHOD zif_cloud_logger~get_messages_as_bapiret2.
@@ -273,14 +273,17 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
   METHOD zif_cloud_logger~get_messages_flat.
 
     RETURN VALUE #( FOR LS_message IN me->lt_log_messages
-            ( get_string_from_message( im_message = VALUE #( msgty = LS_message-symsg-msgty
-                                                             msgid = LS_message-symsg-msgid
-                                                             msgno = LS_message-symsg-msgno
-                                                             msgv1 = LS_message-symsg-msgv1
-                                                             msgv2 = LS_message-symsg-msgv2
-                                                             msgv3 = LS_message-symsg-msgv3
-                                                             msgv4 = LS_message-symsg-msgv4
-                                                             ) ) ) ).
+                   ( get_string_from_message( im_message = VALUE #( msgty = LS_message-symsg-msgty
+                                                                    msgid = LS_message-symsg-msgid
+                                                                    msgno = LS_message-symsg-msgno
+                                                                    msgv1 = LS_message-symsg-msgv1
+                                                                    msgv2 = LS_message-symsg-msgv2
+                                                                    msgv3 = LS_message-symsg-msgv3
+                                                                    msgv4 = LS_message-symsg-msgv4
+                                                                  )
+                                             )
+                    )
+                   ).
 
   ENDMETHOD.
 
@@ -334,7 +337,7 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
   METHOD zif_cloud_logger~log_bapiret2_table_add.
 
     LOOP AT it_bapiret2_t ASSIGNING FIELD-SYMBOL(<fs_bapiret2>).
-*      me->zif_cloud_logger~log_bapiret2_table_add( <fs_bapiret2> ).
+      me->log_bapiret2_structure_add( <fs_bapiret2> ).
     ENDLOOP.
 
   ENDMETHOD.
