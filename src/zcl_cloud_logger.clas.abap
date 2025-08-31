@@ -54,8 +54,8 @@ CLASS zcl_cloud_logger DEFINITION
       FOR zif_cloud_logger~save_application_log .
     ALIASES search_message
       FOR zif_cloud_logger~search_message .
-    ALIASES flat_message
-      FOR zif_cloud_logger~flat_message .
+    ALIASES TY_flat_message
+      FOR zif_cloud_logger~TY_flat_message .
     ALIASES tt_bapiret2
       FOR zif_cloud_logger~tt_bapiret2 .
     ALIASES tt_flat_messages
@@ -119,9 +119,9 @@ CLASS zcl_cloud_logger DEFINITION
         VALUE(re_long_text) TYPE bapiret2-message .
     CLASS-METHODS get_string_from_message
       IMPORTING
-        !im_message   TYPE symsg
+        !im_message      TYPE symsg
       RETURNING
-        VALUE(result) TYPE flat_message .
+        VALUE(RE_result) TYPE TY_flat_message .
 ENDCLASS.
 
 

@@ -22,13 +22,13 @@ CLASS ltc_external_methods IMPLEMENTATION.
     TRY.
         DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_db_save = abap_false ).
 
-        lo_logger->log_message_add( EXPORTING iv_msgty = 'W'
-                              iv_msgid = 'CL'
-                              iv_msgno = '000'
-                              iv_msgv1 = 'Messages for WBS:'
-                              iv_msgv2 = 'KALISPERA'
-                              iv_msgv3 = ''
-                              iv_msgv4 = '' ).
+        lo_logger->log_message_add( iv_msgty = 'W'
+                                    iv_msgid = 'CL'
+                                    iv_msgno = '000'
+                                    iv_msgv1 = 'Messages for WBS:'
+                                    iv_msgv2 = 'KALISPERA'
+                                    iv_msgv3 = ''
+                                    iv_msgv4 = '' ).
 
         lo_logger->log_bapiret2_structure_add( VALUE #( id         = 'Z_AML'
                                     type       = 'W'
@@ -102,7 +102,7 @@ CLASS ltc_external_methods IMPLEMENTATION.
     TRY.
         DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_db_save = abap_false ).
 
-        lo_logger->log_message_add( EXPORTING iv_msgty = 'W'
+        lo_logger->log_message_add(   iv_msgty = 'W'
                                       iv_msgid = 'CL'
                                       iv_msgno = '000'
                                       iv_msgv1 = 'Messages for WBS:'
@@ -110,7 +110,7 @@ CLASS ltc_external_methods IMPLEMENTATION.
                                       iv_msgv3 = ''
                                       iv_msgv4 = '' ).
 
-        lo_logger->log_message_add( EXPORTING iv_msgty = 'E'
+        lo_logger->log_message_add(   iv_msgty = 'E'
                                       iv_msgid = 'CL'
                                       iv_msgno = '000'
                                       iv_msgv1 = 'Messages for WBS:'
@@ -132,7 +132,7 @@ CLASS ltc_external_methods IMPLEMENTATION.
     TRY.
         DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_db_save = abap_false ).
 
-        lo_logger->log_message_add( EXPORTING iv_msgty = 'W'
+        lo_logger->log_message_add(   iv_msgty = 'W'
                                       iv_msgid = 'CL'
                                       iv_msgno = '000'
                                       iv_msgv1 = 'Messages for WBS:'
@@ -140,7 +140,7 @@ CLASS ltc_external_methods IMPLEMENTATION.
                                       iv_msgv3 = ''
                                       iv_msgv4 = '' ).
 
-        lo_logger->log_message_add( EXPORTING iv_msgty = 'E'
+        lo_logger->log_message_add(   iv_msgty = 'E'
                                       iv_msgid = 'CL'
                                       iv_msgno = '000'
                                       iv_msgv1 = 'Messages for WBS:'
@@ -183,7 +183,7 @@ CLASS ltc_external_methods IMPLEMENTATION.
     TRY.
         DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_db_save = abap_false ).
 
-        lo_logger->log_message_add( EXPORTING iv_msgty = 'W'
+        lo_logger->log_message_add(   iv_msgty = 'W'
                                       iv_msgid = 'CL'
                                       iv_msgno = '000'
                                       iv_msgv1 = 'Messages for WBS:'
@@ -207,7 +207,7 @@ CLASS ltc_external_methods IMPLEMENTATION.
     TRY.
         DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_db_save = abap_false ).
 
-        lo_logger->log_message_add( EXPORTING iv_msgty = 'W'
+        lo_logger->log_message_add(   iv_msgty = 'W'
                                       iv_msgid = 'CL'
                                       iv_msgno = '000'
                                       iv_msgv1 = 'Messages for WBS:'
@@ -231,7 +231,7 @@ CLASS ltc_external_methods IMPLEMENTATION.
     TRY.
         DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_db_save = abap_false ).
 
-        lo_logger->log_message_add( EXPORTING iv_msgty = 'W'
+        lo_logger->log_message_add(   iv_msgty = 'W'
                                       iv_msgid = 'CL'
                                       iv_msgno = '000'
                                       iv_msgv1 = 'Messages for WBS:'
