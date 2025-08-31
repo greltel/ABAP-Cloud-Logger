@@ -23,7 +23,7 @@
       "ignorePatterns": [],
       "local": "^L.+$",
       "exception": "^LCX_.+$",
-      "test": "^LTCL_.+$"
+      "test": "^L.+$"
     },
     "method_parameter_names": {
       "exclude": [],
