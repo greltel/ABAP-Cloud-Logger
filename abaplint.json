@@ -75,7 +75,7 @@
     "types_naming": {
       "exclude": [],
       "severity": "Error",
-      "pattern": "^TY_.+$"
+      "pattern": "^T.+$"
     },
     "unused_variables": true
   }
