@@ -7,6 +7,11 @@ This project is licensed under the [MIT License](https://github.com/greltel/ABAP
 ## Contributors-Developers
 The repository was created by [George Drakos](https://www.linkedin.com/in/george-drakos/).
 
+## Motivation for Creating the Repository
+
+Logging is a tool I rely on almost every day while working with ABAP. I wanted to create a version that is not only simple and effective but also fully compatible with the ABAP Cloud environment. 
+The goal is to provide an easy-to-use logger that fits naturally into cloud-ready development practices and can be integrated seamlessly into modern projects.
+
 ## Design Goals/Features
 
 * Install via [ABAPGit](http://abapgit.org)
