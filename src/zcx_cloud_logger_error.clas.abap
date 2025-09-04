@@ -10,7 +10,7 @@ public section.
   interfaces IF_T100_DYN_MSG .
 
   constants:
-    begin of ERROR_RELEASE,
+    begin of ERROR_RELEASE ##NEEDED,
       msgid type symsgid value 'Z_CLOUD_LOGGER',
       msgno type symsgno value '002',
       attr1 type scx_attrname value '',
@@ -19,7 +19,7 @@ public section.
       attr4 type scx_attrname value '',
     end of ERROR_RELEASE .
   constants:
-    begin of ERROR_IN_CREATION,
+    begin of ERROR_IN_CREATION ##NEEDED,
       msgid type symsgid value 'Z_CLOUD_LOGGER',
       msgno type symsgno value '003',
       attr1 type scx_attrname value '',
@@ -28,7 +28,7 @@ public section.
       attr4 type scx_attrname value '',
     end of ERROR_IN_CREATION .
   constants:
-    begin of ERROR_IN_LOGGING,
+    begin of ERROR_IN_LOGGING ##NEEDED,
       msgid type symsgid value 'Z_CLOUD_LOGGER',
       msgno type symsgno value '004',
       attr1 type scx_attrname value '',

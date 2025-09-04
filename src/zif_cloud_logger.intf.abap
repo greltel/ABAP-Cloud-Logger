@@ -127,7 +127,7 @@ INTERFACE zif_cloud_logger
       VALUE(re_result) TYPE abap_boolean .
   METHODS log_contains_warning
     RETURNING
-      VALUE(result) TYPE abap_boolean .
+      VALUE(RE_result) TYPE abap_boolean .
   METHODS search_message
     IMPORTING
       !im_search       TYPE symsg
