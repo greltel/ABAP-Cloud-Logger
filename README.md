@@ -16,6 +16,6 @@ The goal is to provide an easy-to-use logger that fits naturally into cloud-read
 
 * Install via [ABAPGit](http://abapgit.org)
 * ABAP Cloud/Clean Core compatibility.Passed SCI check variant S4HANA_READINESS_2023
-* Based on CL_BALI_LOG
+* Based on [CL_BALI_LOG](https://help.sap.com/docs/btp/sap-business-technology-platform/cl-bali-log-interface-if-bali-log) 
 * Based on class cl_bali_log which is released for Cloud Development
 * Based on Multiton Design Pattern
