@@ -36,6 +36,15 @@ public section.
       attr3 type scx_attrname value '',
       attr4 type scx_attrname value '',
     end of ERROR_IN_LOGGING .
+  constants:
+    begin of ERROR_IN_EMERGENCY_LOG,
+      msgid type symsgid value 'Z_CLOUD_LOGGER',
+      msgno type symsgno value '005',
+      attr1 type scx_attrname value '',
+      attr2 type scx_attrname value '',
+      attr3 type scx_attrname value '',
+      attr4 type scx_attrname value '',
+    end of ERROR_IN_EMERGENCY_LOG .
 
   methods CONSTRUCTOR
     importing

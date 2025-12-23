@@ -37,6 +37,17 @@
      <MSGNR>004</MSGNR>
      <TEXT>Error while adding object to Log</TEXT>
     </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>Z_CLOUD_LOGGER</ARBGB>
+     <MSGNR>005</MSGNR>
+     <TEXT>Error while creating emergency log</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>Z_CLOUD_LOGGER</ARBGB>
+     <MSGNR>006</MSGNR>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>
