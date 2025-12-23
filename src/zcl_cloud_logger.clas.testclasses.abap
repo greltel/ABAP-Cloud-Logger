@@ -82,7 +82,7 @@ CLASS ltc_external_methods IMPLEMENTATION.
 
         DATA(lo_second_logger) = zcl_cloud_logger=>get_instance( iv_ext_number = '1234' iv_db_save = abap_false ).
 
-        MESSAGE e007(00) WITH 'Merge' INTO DATA(dummy2).
+        MESSAGE e005(z_cloud_logger) INTO DATA(dummy2).
         lo_second_logger->log_syst_add( ).
 
         lo_first_logger->merge_logs( lo_second_logger ).

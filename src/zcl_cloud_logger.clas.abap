@@ -605,6 +605,12 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
         cl_bali_log_db=>get_instance( )->save_log( log                        = me->lo_log_handle
                                                    use_2nd_db_connection      = im_use_2nd_db_connection
                                                    assign_to_current_appl_job = im_assign_to_current_appl_job ).
+
+        IF cl_system_transaction_state=>get_in_update_task( )        IS INITIAL AND
+           cl_system_transaction_state=>get_on_end_of_transaction( ) IS INITIAL.
+          COMMIT WORK.
+        ENDIF.
+
       CATCH cx_bali_runtime INTO DATA(lo_exception).
         RAISE EXCEPTION NEW zcx_cloud_logger_error( textid   = zcx_cloud_logger_error=>error_release
                                                     previous = lo_exception ).
