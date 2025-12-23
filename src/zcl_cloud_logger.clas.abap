@@ -599,7 +599,7 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-    CHECK me->lo_log_handle IS BOUND.
+    CHECK me->lo_log_handle IS BOUND AND me->lv_db_save EQ abap_true.
 
     TRY.
         cl_bali_log_db=>get_instance( )->save_log( log                        = me->lo_log_handle
