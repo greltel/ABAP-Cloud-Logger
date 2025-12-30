@@ -56,7 +56,19 @@ lo_logger->log_message_add( iv_msgty = 'W'
 lo_logger->log_string_add( iv_string = 'String Add'
                            iv_msgty  = 'E'  ).
 ```
-                           
+### 5. Get Messages
+
+```abap
+DATA(lv_message_count) = lo_logger->get_message_count( ).
+
+DATA(lt_messages_bapiret2) = lo_logger->get_messages_as_bapiret2( ).
+
+DATA(lt_messages) = lo_logger->get_messages( ).
+
+DATA(lt_messages_flat) = lo_logger->get_messages_flat( ).
+
+DATA(lt_messages_rap) = lo_logger->get_messages_rap( ).
+```
 ## Design Goals/Features
 
 * Install via [ABAPGit](http://abapgit.org)
