@@ -41,7 +41,7 @@ TRY.
 ENDTRY.
 ```
 
-### 3. String Add
+### 3. Message Add
 
 ```abap
 lo_logger->log_message_add( iv_symsg = VALUE #( msgty = 'W'
@@ -50,7 +50,7 @@ lo_logger->log_message_add( iv_symsg = VALUE #( msgty = 'W'
                                                 msgv1 = 'Test Message' ) ).
 ```
                             
-### 4. Message Add
+### 4. String Add
 
 ```abap
 lo_logger->log_string_add( iv_string = 'String Add'
