@@ -86,7 +86,7 @@ DATA(lv_messages_exist) = lo_logger->log_contains_messages( ).
 
 DATA(lv_warning_exists) = lo_logger->log_contains_warning( ).
 
-DATA(lv_is_empty) = lo_logger->log_is_empty( ).
+DATA(lv_is_empty)       = lo_logger->log_is_empty( ).
 ```
 
 ### 8. Get Log Handle
@@ -107,7 +107,15 @@ lo_logger->save_application_log( ).
 
 ### 11. Search for a Specific Message
 
+```abap
+data(lv_specific_message_exists) = lo_logger->search_message( im_search = VALUE #( msgid = '00' ) ).
+```
+
 ### 12. Reset Log
+
+```abap
+lo_logger->reset_appl_log( ).
+```
 
 ## Design Goals/Features
 
