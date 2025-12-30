@@ -87,9 +87,9 @@ DATA(lv_messages_exist) = lo_logger->log_contains_messages( ).
 
 DATA(lv_warning_exists) = lo_logger->log_contains_warning( ).
 
-DATA(lv_handle) = lo_logger->get_handle( ).
+DATA(lv_handle)         = lo_logger->get_handle( ).
 
-DATA(lv_log_handle) = lo_logger->get_log_handle( ).
+DATA(lv_log_handle)     = lo_logger->get_log_handle( ).
 ```
 
 ### 8. Save Application Log
