@@ -56,7 +56,15 @@ lo_logger->log_message_add( iv_msgty = 'W'
 lo_logger->log_string_add( iv_string = 'String Add'
                            iv_msgty  = 'E'  ).
 ```
-### 5. Get Messages
+### 5. BAPIRET2 Structure and Table Add
+
+```abap
+lo_logger->log_bapiret2_table_add( VALUE #( ( ) ) ).
+
+lo_logger->log_bapiret2_structure_add( VALUE #(  ) ) .
+```
+
+### 6. Get Messages
 
 ```abap
 DATA(lv_message_count)     = lo_logger->get_message_count( ).
