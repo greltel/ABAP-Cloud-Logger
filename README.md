@@ -105,6 +105,19 @@ lo_logger->save_application_log( ).
 
 ### 10. Merge Logs
 
+```abap
+"Get a New Log Instance
+DATA(lo_new_logger) = zcl_cloud_logger=>get_instance( iv_object    = 'Z_MY_OBJECT_NEW'
+                                                      iv_subobject = 'Z_MY_SUBOBJECT_NEW' ).
+
+"Add Message
+lo_new_logger->log_string_add( iv_string = 'New Logger String'
+                               iv_msgty  = 'E'  ).
+
+"Merge with Previous Log
+lo_logger->merge_logs( lo_new_logger ).
+```
+
 ### 11. Search for a Specific Message
 
 ```abap
