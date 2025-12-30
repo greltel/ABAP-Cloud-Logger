@@ -342,6 +342,8 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
 
   METHOD zif_cloud_logger~log_bapiret2_structure_add.
 
+    CHECK is_bapiret2 IS NOT INITIAL.
+
     TRY.
         DATA(lo_item) = cl_bali_message_setter=>create_from_bapiret2( is_bapiret2 ).
 
