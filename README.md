@@ -94,6 +94,8 @@ data(lv_warning_exists) = lo_logger->log_contains_warning( ).
 lo_logger->save_application_log( ).
 ```
 
+### 9. Merge Logs
+
 ## Design Goals/Features
 
 * Install via [ABAPGit](http://abapgit.org)
