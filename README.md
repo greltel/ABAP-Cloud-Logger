@@ -5,6 +5,7 @@ It acts as a fluent wrapper around the standard class `CL_BALI_LOG`, simplifying
 # Prerequisites
 
 * SAP S/4HANA 2021 (or higher) OR SAP BTP ABAP Environment.
+* XCO library availability
 
 ## License
 This project is licensed under the [MIT License](https://github.com/greltel/ABAP-Cloud-Logger/blob/main/LICENSE).
@@ -43,10 +44,10 @@ ENDTRY.
 ### 3. String Add
 
 ```abap
-lo_logger->log_message_add( iv_msgty = 'W'
-                            iv_msgid = '00'
-                            iv_msgno = '001'
-                            iv_msgv1 = 'Message Add').
+lo_logger->log_message_add( iv_symsg = VALUE #( msgty = 'W'
+                                                msgid = 'CL'
+                                                msgno = '000'
+                                                msgv1 = 'Test Message' ) ).
 ```
                             
 ### 4. Message Add
