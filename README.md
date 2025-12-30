@@ -61,7 +61,7 @@ lo_logger->log_string_add( iv_string = 'String Add'
 ```abap
 lo_logger->log_bapiret2_table_add( VALUE #( ( ) ) ).
 
-lo_logger->log_bapiret2_structure_add( VALUE #(  ) ) .
+lo_logger->log_bapiret2_structure_add( VALUE #( ) ) .
 ```
 
 ### 6. Get Messages
@@ -77,6 +77,23 @@ DATA(lt_messages_flat)     = lo_logger->get_messages_flat( ).
 
 DATA(lt_messages_rap)      = lo_logger->get_messages_rap( ).
 ```
+
+### 7. Functional Methods
+
+```abap
+data(lv_error_exists)   = lo_logger->log_contains_error( ).
+
+data(lv_messages_exist) = lo_logger->log_contains_messages( ).
+
+data(lv_warning_exists) = lo_logger->log_contains_warning( ).
+```
+
+### 8. Save Application Log
+
+```abap
+lo_logger->save_application_log( ).
+```
+
 ## Design Goals/Features
 
 * Install via [ABAPGit](http://abapgit.org)
