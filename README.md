@@ -100,6 +100,10 @@ lo_logger->save_application_log( ).
 
 ### 9. Merge Logs
 
+### 10. Search for a Specific Message
+
+### 11. Reset Log
+
 ## Design Goals/Features
 
 * Install via [ABAPGit](http://abapgit.org)
