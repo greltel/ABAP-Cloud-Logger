@@ -4,7 +4,7 @@ It acts as a fluent wrapper around the standard class `CL_BALI_LOG`, simplifying
 
 # Prerequisites
 
-* SAP S/4HANA 2022 (or higher) OR SAP BTP ABAP Environment.
+* SAP S/4HANA 2021 (or higher) OR SAP BTP ABAP Environment.
 
 ## License
 This project is licensed under the [MIT License](https://github.com/greltel/ABAP-Cloud-Logger/blob/main/LICENSE).
