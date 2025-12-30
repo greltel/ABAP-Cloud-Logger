@@ -21,11 +21,11 @@ The goal is to provide an easy-to-use logger that fits naturally into cloud-read
 ## Usage Examples
 
 ### 1. Initialization
-To start logging, get an instance of the logger by providing your Application Log Object and Subobject (defined in `SLG0` or via Cloud API)(Optional).
+To start logging, get an instance of the logger by providing your Application Log Object and Subobject (defined in `SLG0` or via Cloud API).
 
 ```abap
-DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_object    = 'Z_MY_OBJECT'
-                                                  iv_subobject = 'Z_MY_SUBOBJECT' ).
+DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_object    = 'Z_CLOUD_LOG'
+                                                  iv_subobject = 'Z_CLOUD_LOG' ).
 ```
 
 ### 2. Exception Add
