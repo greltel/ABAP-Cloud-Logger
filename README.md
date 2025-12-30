@@ -103,7 +103,13 @@ DATA(lv_log_handle)     = lo_logger->get_log_handle( ).
 lo_logger->save_application_log( ).
 ```
 
-### 10. Merge Logs
+### 10. Search for a Specific Message
+
+```abap
+data(lv_specific_message_exists) = lo_logger->search_message( im_search = VALUE #( msgid = '00' ) ).
+```
+
+### 11. Merge Logs
 
 ```abap
 "Get a New Log Instance
@@ -116,12 +122,6 @@ lo_new_logger->log_string_add( iv_string = 'New Logger String'
 
 "Merge with Previous Log
 lo_logger->merge_logs( lo_new_logger ).
-```
-
-### 11. Search for a Specific Message
-
-```abap
-data(lv_specific_message_exists) = lo_logger->search_message( im_search = VALUE #( msgid = '00' ) ).
 ```
 
 ### 12. Reset Log
