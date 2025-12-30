@@ -167,8 +167,10 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
 
             me->lo_log_handle->set_header( lo_header ).
 
-          CATCH cx_bali_runtime cx_uuid_error INTO DATA(lo_exception_2).
-            DATA(lv_exception_text) = lo_exception_2->get_text( ).
+          CATCH cx_bali_runtime cx_uuid_error INTO DATA(lo_exception).
+            DATA(lv_exception_text) = lo_exception->get_text( ).
+            RAISE EXCEPTION NEW zcx_cloud_logger_error( textid   = zcx_cloud_logger_error=>error_in_creation
+                                                        previous = lo_exception ).
         ENDTRY.
 
         me->lv_db_save          = COND #( WHEN iv_object IS SUPPLIED AND iv_object IS NOT INITIAL THEN iv_db_save
@@ -176,9 +178,9 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
 
         me->create_emergency_log( ).
 
-      CATCH cx_bali_runtime cx_uuid_error INTO DATA(lo_exception).
+      CATCH cx_bali_runtime cx_uuid_error INTO DATA(lo_exception_new).
         RAISE EXCEPTION NEW zcx_cloud_logger_error( textid   = zcx_cloud_logger_error=>error_in_creation
-                                                    previous = lo_exception ).
+                                                    previous = lo_exception_new ).
     ENDTRY.
 
   ENDMETHOD.
@@ -190,7 +192,7 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
                                          log_subobject = iv_subobject
                                          extnumber     = iv_ext_number ] ).
 
-      re_logger_instance = VALUE #( lt_logger_instances[ log_object = iv_object log_subobject = iv_subobject extnumber = iv_ext_number ]-logger OPTIONAL )..
+      re_logger_instance = VALUE #( lt_logger_instances[ log_object = iv_object log_subobject = iv_subobject extnumber = iv_ext_number ]-logger OPTIONAL ).
 
 
     ELSE.
@@ -312,7 +314,7 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
 
         me->lo_log_handle->add_item( lo_item ).
 
-        me->add_message_internal_log( iv_symsg =  value #( msgid = is_bapiret2-id
+        me->add_message_internal_log( iv_symsg =  VALUE #( msgid = is_bapiret2-id
                                                            msgno = is_bapiret2-number
                                                            msgty = is_bapiret2-type
                                                            msgv1 = is_bapiret2-message_v1
@@ -320,6 +322,8 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
                                                            msgv3 = is_bapiret2-message_v3
                                                            msgv4 = is_bapiret2-message_v4 )
                                       ir_item  = lo_item ).
+
+        ro_logger = me.
 
       CATCH cx_bali_runtime INTO DATA(lo_exception).
         RAISE EXCEPTION NEW zcx_cloud_logger_error( textid   = zcx_cloud_logger_error=>error_in_logging
@@ -334,6 +338,8 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
     LOOP AT it_bapiret2_t REFERENCE INTO DATA(lo_bapiret2_structure).
       me->log_bapiret2_structure_add( lo_bapiret2_structure->* ).
     ENDLOOP.
+
+    ro_logger = me.
 
   ENDMETHOD.
 
@@ -411,6 +417,7 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
                                                            msgv1 = CONV #( iv_exception->get_text( ) ) )
                                       ir_item  = lo_item   ).
 
+        ro_logger = me.
 
       CATCH cx_bali_runtime INTO DATA(lo_exception).
         RAISE EXCEPTION NEW zcx_cloud_logger_error( textid   = zcx_cloud_logger_error=>error_in_logging
@@ -454,6 +461,7 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
         me->add_message_internal_log( iv_symsg = iv_symsg
                                       ir_item  = lo_item ).
 
+        ro_logger = me.
 
       CATCH cx_bali_runtime INTO DATA(lo_exception).
         RAISE EXCEPTION NEW zcx_cloud_logger_error( textid   = zcx_cloud_logger_error=>error_in_logging
@@ -476,6 +484,8 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
 
         me->add_message_internal_log( iv_symsg = VALUE #( msgty = iv_msgty msgv1 = CONV #( iv_string ) )
                                       ir_item  = lo_item ).
+
+        ro_logger = me.
 
       CATCH cx_bali_runtime INTO DATA(lo_exception).
         RAISE EXCEPTION NEW zcx_cloud_logger_error( textid   = zcx_cloud_logger_error=>error_in_logging
@@ -504,8 +514,9 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
                                                           msgv2 = lo_xco_message->value-msgv2
                                                           msgv3 = lo_xco_message->value-msgv3
                                                           msgv4 = lo_xco_message->value-msgv4 )
-                                      ir_item  = lo_item
-                                     ).
+                                      ir_item  = lo_item ).
+
+        ro_logger = me.
 
       CATCH cx_bali_runtime INTO DATA(lo_exception).
         RAISE EXCEPTION NEW zcx_cloud_logger_error( textid   = zcx_cloud_logger_error=>error_in_logging

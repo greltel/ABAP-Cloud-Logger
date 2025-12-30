@@ -5,6 +5,7 @@ CLASS ltc_external_methods DEFINITION FINAL
   PRIVATE SECTION.
     METHODS add_messages                  FOR TESTING RAISING cx_static_check.
     METHODS create_and_save_log           FOR TESTING RAISING cx_static_check.
+    METHODS create_wrong_log              FOR TESTING RAISING cx_static_check.
     METHODS merge_logs                    FOR TESTING RAISING cx_static_check.
     METHODS check_error_in_log            FOR TESTING RAISING cx_static_check.
     METHODS check_warning_in_log          FOR TESTING RAISING cx_static_check.
@@ -20,7 +21,7 @@ CLASS ltc_external_methods IMPLEMENTATION.
   METHOD add_messages.
 
     TRY.
-        DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_db_save = abap_false ).
+        DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_object = 'Z_CLOUD_LOG' iv_subobject = 'Z_CLOUD_LOG' iv_db_save = abap_false ).
 
         lo_logger->log_message_add( iv_symsg = VALUE #( msgty = 'W'
                                                         msgid = 'CL'
@@ -52,16 +53,31 @@ CLASS ltc_external_methods IMPLEMENTATION.
                                             act = lo_logger->get_message_count( ) ).
         lo_logger->reset_appl_log( ).
 
-      CATCH zcx_cloud_logger_error.
+      CATCH zcx_cloud_logger_error INTO DATA(lo_exception).
+        DATA(lv_exception_text) = lo_exception->get_text( ).
+        cl_abap_unit_assert=>fail( ).
     ENDTRY.
 
   ENDMETHOD.
 
+  METHOD create_wrong_log.
+
+    TRY.
+        DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_db_save = abap_true iv_object = 'Z_DUMMY_WRONG' iv_subobject = 'Z_DUMMY_WRONG' ).
+
+        cl_abap_unit_assert=>fail( ).
+
+      CATCH zcx_cloud_logger_error INTO DATA(lo_exception).
+        DATA(lv_exception_text) = lo_exception->get_text( ).
+        cl_abap_unit_assert=>assert_true( abap_true ).
+    ENDTRY.
+
+  ENDMETHOD.
 
   METHOD create_and_save_log.
 
     TRY.
-        DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_db_save = abap_true iv_object = 'APLO_TEST' iv_subobject = 'SUBOBJECT1' ).
+        DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_db_save = abap_true iv_object = 'Z_CLOUD_LOG' iv_subobject = 'Z_CLOUD_LOG' ).
 
         lo_logger->log_string_add( 'Message to save' ).
 
@@ -69,7 +85,8 @@ CLASS ltc_external_methods IMPLEMENTATION.
 
         cl_abap_unit_assert=>assert_true( abap_true ).
 
-      CATCH zcx_cloud_logger_error.
+      CATCH zcx_cloud_logger_error INTO DATA(lo_exception).
+        DATA(lv_exception_text) = lo_exception->get_text( ).
         cl_abap_unit_assert=>fail( ).
     ENDTRY.
 
@@ -78,9 +95,9 @@ CLASS ltc_external_methods IMPLEMENTATION.
   METHOD merge_logs.
 
     TRY.
-        DATA(lo_first_logger) = zcl_cloud_logger=>get_instance( iv_ext_number = '123' iv_db_save = abap_false ).
+        DATA(lo_first_logger) = zcl_cloud_logger=>get_instance( iv_object = 'Z_CLOUD_LOG' iv_subobject = 'Z_CLOUD_LOG' iv_ext_number = '123' iv_db_save = abap_false ).
 
-        DATA(lo_second_logger) = zcl_cloud_logger=>get_instance( iv_ext_number = '1234' iv_db_save = abap_false ).
+        DATA(lo_second_logger) = zcl_cloud_logger=>get_instance( iv_object = 'Z_CLOUD_LOG' iv_subobject = 'Z_CLOUD_LOG' iv_ext_number = '1234' iv_db_save = abap_false ).
 
         MESSAGE e005(z_cloud_logger) INTO DATA(dummy2).
         lo_second_logger->log_syst_add( ).
@@ -91,7 +108,9 @@ CLASS ltc_external_methods IMPLEMENTATION.
                                             act = lo_first_logger->get_message_count( ) ).
 
 
-      CATCH zcx_cloud_logger_error.
+      CATCH zcx_cloud_logger_error INTO DATA(lo_exception).
+        DATA(lv_exception_text) = lo_exception->get_text( ).
+        cl_abap_unit_assert=>fail( ).
     ENDTRY.
 
   ENDMETHOD.
@@ -100,7 +119,7 @@ CLASS ltc_external_methods IMPLEMENTATION.
   METHOD check_error_in_log.
 
     TRY.
-        DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_db_save = abap_false ).
+        DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_object = 'Z_CLOUD_LOG' iv_subobject = 'Z_CLOUD_LOG' iv_db_save = abap_false ).
 
         lo_logger->log_message_add( iv_symsg = VALUE #( msgty = 'W'
                                                 msgid = 'CL'
@@ -121,7 +140,9 @@ CLASS ltc_external_methods IMPLEMENTATION.
         cl_abap_unit_assert=>assert_true( lo_logger->log_contains_error( ) ).
         lo_logger->reset_appl_log( ).
 
-      CATCH zcx_cloud_logger_error.
+      CATCH zcx_cloud_logger_error INTO DATA(lo_exception).
+        DATA(lv_exception_text) = lo_exception->get_text( ).
+        cl_abap_unit_assert=>fail( ).
     ENDTRY.
 
   ENDMETHOD.
@@ -130,7 +151,7 @@ CLASS ltc_external_methods IMPLEMENTATION.
   METHOD check_warning_in_log.
 
     TRY.
-        DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_db_save = abap_false ).
+        DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_object = 'Z_CLOUD_LOG' iv_subobject = 'Z_CLOUD_LOG' iv_db_save = abap_false ).
 
         lo_logger->log_message_add( iv_symsg = VALUE #( msgty = 'W'
                                                 msgid = 'CL'
@@ -151,7 +172,9 @@ CLASS ltc_external_methods IMPLEMENTATION.
         cl_abap_unit_assert=>assert_true( lo_logger->log_contains_warning( ) ).
         lo_logger->reset_appl_log( ).
 
-      CATCH zcx_cloud_logger_error.
+      CATCH zcx_cloud_logger_error INTO DATA(lo_exception).
+        DATA(lv_exception_text) = lo_exception->get_text( ).
+        cl_abap_unit_assert=>fail( ).
     ENDTRY.
 
   ENDMETHOD.
@@ -170,7 +193,7 @@ CLASS ltc_external_methods IMPLEMENTATION.
 
         lo_logger->reset_appl_log( ).
 
-      CATCH zcx_cloud_logger_error.
+      CATCH zcx_cloud_logger_error INTO DATA(lo_exception).
         cl_abap_unit_assert=>assert_true( abap_true ).
     ENDTRY.
 
@@ -181,7 +204,7 @@ CLASS ltc_external_methods IMPLEMENTATION.
 
 
     TRY.
-        DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_db_save = abap_false ).
+        DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_db_save = abap_false iv_object = 'Z_CLOUD_LOG' iv_subobject = 'Z_CLOUD_LOG' ).
 
         lo_logger->log_message_add( iv_symsg = VALUE #( msgty = 'W'
                                                 msgid = 'CL'
@@ -191,12 +214,14 @@ CLASS ltc_external_methods IMPLEMENTATION.
                                                 msgv3 = ''
                                                 msgv4 = '' ) ).
 
-        DATA(lv_result) = lo_logger->search_message( im_search = VALUE #( msgid = 'CL' msgno = '000' ) ).
+        DATA(lv_result) = lo_logger->search_message( im_search = VALUE #( msgid = 'CL' ) ).
 
         cl_abap_unit_assert=>assert_true( lv_result ).
         lo_logger->reset_appl_log( ).
 
-      CATCH zcx_cloud_logger_error.
+      CATCH zcx_cloud_logger_error INTO DATA(lo_exception).
+        DATA(lv_exception_text) = lo_exception->get_text( ).
+        cl_abap_unit_assert=>fail( ).
     ENDTRY.
 
   ENDMETHOD.
@@ -205,7 +230,7 @@ CLASS ltc_external_methods IMPLEMENTATION.
   METHOD search_message_not_found.
 
     TRY.
-        DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_db_save = abap_false ).
+        DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_db_save = abap_false iv_object = 'Z_CLOUD_LOG' iv_subobject = 'Z_CLOUD_LOG' ).
 
         lo_logger->log_message_add( iv_symsg = VALUE #( msgty = 'W'
                                                 msgid = 'CL'
@@ -215,12 +240,14 @@ CLASS ltc_external_methods IMPLEMENTATION.
                                                 msgv3 = ''
                                                 msgv4 = '' ) ).
 
-        DATA(lv_result) = lo_logger->search_message( im_search = VALUE #( msgid = 'CL' msgno = '003' ) ).
+        DATA(lv_result) = lo_logger->search_message( im_search = VALUE #( msgno = '003' ) ).
 
         cl_abap_unit_assert=>assert_false( lv_result ).
         lo_logger->reset_appl_log( ).
 
-      CATCH zcx_cloud_logger_error.
+      CATCH zcx_cloud_logger_error INTO DATA(lo_exception).
+        DATA(lv_exception_text) = lo_exception->get_text( ).
+        cl_abap_unit_assert=>fail( ).
     ENDTRY.
 
   ENDMETHOD.
@@ -229,7 +256,7 @@ CLASS ltc_external_methods IMPLEMENTATION.
   METHOD search_message_with_type.
 
     TRY.
-        DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_db_save = abap_false ).
+        DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_db_save = abap_false iv_object = 'Z_CLOUD_LOG' iv_subobject = 'Z_CLOUD_LOG' ).
 
         lo_logger->log_message_add( iv_symsg = VALUE #( msgty = 'W'
                                                 msgid = 'CL'
@@ -244,7 +271,9 @@ CLASS ltc_external_methods IMPLEMENTATION.
         cl_abap_unit_assert=>assert_true( lv_result ).
         lo_logger->reset_appl_log( ).
 
-      CATCH zcx_cloud_logger_error.
+      CATCH zcx_cloud_logger_error INTO DATA(lo_exception).
+        DATA(lv_exception_text) = lo_exception->get_text( ).
+        cl_abap_unit_assert=>fail( ).
     ENDTRY.
 
   ENDMETHOD.

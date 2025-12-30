@@ -69,21 +69,33 @@ interface ZIF_CLOUD_LOGGER
   methods LOG_STRING_ADD
     importing
       !IV_STRING type STRING
-      !IV_MSGTY type SYMSGTY default C_DEFAULT_MESSAGE_ATTRIBUTES-TYPE .
+      !IV_MSGTY type SYMSGTY default C_DEFAULT_MESSAGE_ATTRIBUTES-TYPE
+    returning
+      value(RO_LOGGER) type ref to ZIF_CLOUD_LOGGER .
   methods LOG_MESSAGE_ADD
     importing
-      !IV_SYMSG type SYMSG optional .
-  methods LOG_SYST_ADD .
+      !IV_SYMSG type SYMSG optional
+    returning
+      value(RO_LOGGER) type ref to ZIF_CLOUD_LOGGER .
+  methods LOG_SYST_ADD
+    returning
+      value(RO_LOGGER) type ref to ZIF_CLOUD_LOGGER .
   methods LOG_EXCEPTION_ADD
     importing
       !IV_SEVERITY type SYMSGTY default C_DEFAULT_MESSAGE_ATTRIBUTES-TYPE
-      !IV_EXCEPTION type ref to CX_ROOT .
+      !IV_EXCEPTION type ref to CX_ROOT
+    returning
+      value(RO_LOGGER) type ref to ZIF_CLOUD_LOGGER .
   methods LOG_BAPIRET2_TABLE_ADD
     importing
-      !IT_BAPIRET2_T type TT_BAPIRET2 .
+      !IT_BAPIRET2_T type TT_BAPIRET2
+    returning
+      value(RO_LOGGER) type ref to ZIF_CLOUD_LOGGER .
   methods LOG_BAPIRET2_STRUCTURE_ADD
     importing
-      !IS_BAPIRET2 type BAPIRET2 .
+      !IS_BAPIRET2 type BAPIRET2
+    returning
+      value(RO_LOGGER) type ref to ZIF_CLOUD_LOGGER .
   methods SAVE_APPLICATION_LOG
     importing
       !IM_USE_2ND_DB_CONNECTION type ABAP_BOOLEAN default ABAP_FALSE
