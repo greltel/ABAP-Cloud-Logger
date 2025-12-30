@@ -28,6 +28,9 @@ DATA(lo_logger) = zcl_cloud_logger=>get_instance(
   iv_subobject = 'Z_MY_SUBOBJECT').
 ```
 
+### 2. Exception Add
+
+```abap
 TRY.
     " Your business logic here
     DATA(result) = 100 / 0. 
@@ -36,6 +39,7 @@ TRY.
     " Pass the exception object to the logger
     lo_logger->add_exception( lx_error ).
 ENDTRY.
+```
 
 ## Design Goals/Features
 
