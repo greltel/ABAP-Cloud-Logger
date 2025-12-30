@@ -81,11 +81,15 @@ DATA(lt_messages_rap)      = lo_logger->get_messages_rap( ).
 ### 7. Functional Methods
 
 ```abap
-data(lv_error_exists)   = lo_logger->log_contains_error( ).
+DATA(lv_error_exists)   = lo_logger->log_contains_error( ).
 
-data(lv_messages_exist) = lo_logger->log_contains_messages( ).
+DATA(lv_messages_exist) = lo_logger->log_contains_messages( ).
 
-data(lv_warning_exists) = lo_logger->log_contains_warning( ).
+DATA(lv_warning_exists) = lo_logger->log_contains_warning( ).
+
+DATA(lv_handle) = lo_logger->get_handle( ).
+
+DATA(lv_log_handle) = lo_logger->get_log_handle( ).
 ```
 
 ### 8. Save Application Log
