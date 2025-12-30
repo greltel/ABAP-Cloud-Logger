@@ -23,10 +23,9 @@ The goal is to provide an easy-to-use logger that fits naturally into cloud-read
 To start logging, get an instance of the logger by providing your Application Log Object and Subobject (defined in `SLG0` or via Cloud API).
 
 ```abap
-DATA(lo_logger) = zcl_logger=>get_instance(
+DATA(lo_logger) = zcl_cloud_logger=>get_instance(
   iv_object    = 'Z_MY_OBJECT'
-  iv_subobject = 'Z_MY_SUBOBJECT'
-).
+  iv_subobject = 'Z_MY_SUBOBJECT').
 ```
 
 TRY.
