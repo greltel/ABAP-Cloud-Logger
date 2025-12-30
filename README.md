@@ -33,11 +33,11 @@ DATA(lo_logger) = zcl_cloud_logger=>get_instance(
 ```abap
 TRY.
     " Your business logic here
-    DATA(result) = 100 / 0. 
+    DATA(result) = 100 / 0.
 
   CATCH cx_sy_zerodivide INTO DATA(lx_error).
     " Pass the exception object to the logger
-    lo_logger->add_exception( lx_error ).
+    lo_logger->log_exception_add( lx_error ).
 ENDTRY.
 ```
 
