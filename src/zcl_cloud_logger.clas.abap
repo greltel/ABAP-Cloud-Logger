@@ -106,23 +106,11 @@ private section.
       !IV_EXPIRY_DATE type XSDDATE_D optional .
   methods ADD_MESSAGE_INTERNAL_LOG
     importing
-      !IV_MSGID type SYMSGID default C_DEFAULT_MESSAGE_ATTRIBUTES-ID
-      !IV_MSGNO type SYMSGNO default C_DEFAULT_MESSAGE_ATTRIBUTES-NO
-      !IV_MSGTY type SYMSGTY default C_DEFAULT_MESSAGE_ATTRIBUTES-TYPE
-      !IV_MSGV1 type SYMSGV
-      !IV_MSGV2 type SYMSGV optional
-      !IV_MSGV3 type SYMSGV optional
-      !IV_MSGV4 type SYMSGV optional
+      !IV_SYMSG type SYMSG optional
       !IR_ITEM type ref to IF_BALI_ITEM_SETTER optional .
   class-methods GET_LONG_TEXT_FROM_MESSAGE
     importing
-      !IV_MSGID type SYMSGID default C_DEFAULT_MESSAGE_ATTRIBUTES-ID
-      !IV_MSGNO type SYMSGNO default C_DEFAULT_MESSAGE_ATTRIBUTES-NO
-      !IV_MSGTY type SYMSGTY default C_DEFAULT_MESSAGE_ATTRIBUTES-TYPE
-      !IV_MSGV1 type SYMSGV
-      !IV_MSGV2 type SYMSGV
-      !IV_MSGV3 type SYMSGV
-      !IV_MSGV4 type SYMSGV
+      !IV_SYMSG type SYMSG
     returning
       value(RE_LONG_TEXT) type BAPIRET2-MESSAGE .
   class-methods GET_STRING_FROM_MESSAGE
@@ -141,35 +129,16 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
   METHOD add_message_internal_log.
 
     INSERT VALUE #( item         = ir_item
-                    symsg        = VALUE #( msgty = iv_msgty
-                                            msgid = iv_msgid
-                                            msgno = iv_msgno
-                                            msgv1 = iv_msgv1
-                                            msgv2 = iv_msgv2
-                                            msgv3 = iv_msgv3
-                                            msgv4 = iv_msgv4 )
-                    message      = get_long_text_from_message( iv_msgid = iv_msgid
-                                                               iv_msgno = iv_msgno
-                                                               iv_msgty = iv_msgty
-                                                               iv_msgv1 = iv_msgv1
-                                                               iv_msgv2 = iv_msgv2
-                                                               iv_msgv3 = iv_msgv3
-                                                               iv_msgv4 = iv_msgv4
-                                                             )
-                    type         = iv_msgty
+                    symsg        = iv_symsg
+                    message      = get_long_text_from_message( iv_symsg )
+                    type         = iv_symsg-msgty
                     user_name    = cl_abap_context_info=>get_user_alias( )
                     date         = cl_abap_context_info=>get_system_date( )
                     time         = cl_abap_context_info=>get_system_time( ) ) INTO TABLE me->lt_log_messages.
 
     IF lo_emergency_log IS BOUND AND me->lv_enable_emergency_log EQ abap_true.
 
-      lo_emergency_log->add_message( is_symsg = VALUE #( msgty = iv_msgty
-                                                         msgid = iv_msgid
-                                                         msgno = iv_msgno
-                                                         msgv1 = iv_msgv1
-                                                         msgv2 = iv_msgv2
-                                                         msgv3 = iv_msgv3
-                                                         msgv4 = iv_msgv4 ) ).
+      lo_emergency_log->add_message( is_symsg = iv_symsg ).
 
     ENDIF.
 
@@ -180,11 +149,11 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
 
     TRY.
 
-        me->lo_log_handle = cl_bali_log=>create( ).
-        me->lv_object     = iv_object.
-        me->lv_subobject  = iv_subobject.
-        me->lv_ext_number = iv_ext_number.
-        me->lv_expiry_date = iv_expiry_date.
+        me->lo_log_handle           = cl_bali_log=>create( ).
+        me->lv_object               = iv_object.
+        me->lv_subobject            = iv_subobject.
+        me->lv_ext_number           = iv_ext_number.
+        me->lv_expiry_date          = iv_expiry_date.
         me->lv_enable_emergency_log = iv_enable_emergency_log.
 
         TRY.
@@ -245,13 +214,7 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
 
   METHOD get_long_text_from_message.
 
-    RETURN xco_cp=>message( VALUE #( msgty = iv_msgty
-                                     msgid = iv_msgid
-                                     msgno = iv_msgno
-                                     msgv1 = iv_msgv1
-                                     msgv2 = iv_msgv2
-                                     msgv3 = iv_msgv3
-                                     msgv4 = iv_msgv4 ) )->get_text( ).
+    RETURN xco_cp=>message( iv_symsg )->get_text( ).
 
   ENDMETHOD.
 
@@ -349,13 +312,13 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
 
         me->lo_log_handle->add_item( lo_item ).
 
-        me->add_message_internal_log( iv_msgid = is_bapiret2-id
-                                      iv_msgno = is_bapiret2-number
-                                      iv_msgty = is_bapiret2-type
-                                      iv_msgv1 = is_bapiret2-message_v1
-                                      iv_msgv2 = is_bapiret2-message_v2
-                                      iv_msgv3 = is_bapiret2-message_v3
-                                      iv_msgv4 = is_bapiret2-message_v4
+        me->add_message_internal_log( iv_symsg =  value #( msgid = is_bapiret2-id
+                                                           msgno = is_bapiret2-number
+                                                           msgty = is_bapiret2-type
+                                                           msgv1 = is_bapiret2-message_v1
+                                                           msgv2 = is_bapiret2-message_v2
+                                                           msgv3 = is_bapiret2-message_v3
+                                                           msgv4 = is_bapiret2-message_v4 )
                                       ir_item  = lo_item ).
 
       CATCH cx_bali_runtime INTO DATA(lo_exception).
@@ -444,9 +407,10 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
 
         me->lo_log_handle->add_item( lo_item ).
 
-        me->add_message_internal_log( iv_msgty = iv_severity
-                                      iv_msgv1 = CONV #( iv_exception->get_text( ) )
-                                      ir_item  = lo_item ).
+        me->add_message_internal_log( iv_symsg =  VALUE #( msgty = iv_severity
+                                                           msgv1 = CONV #( iv_exception->get_text( ) ) )
+                                      ir_item  = lo_item   ).
+
 
       CATCH cx_bali_runtime INTO DATA(lo_exception).
         RAISE EXCEPTION NEW zcx_cloud_logger_error( textid   = zcx_cloud_logger_error=>error_in_logging
@@ -477,24 +441,19 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
 
     TRY.
 
-        DATA(lo_item) = cl_bali_message_setter=>create( severity   = iv_msgty
-                                                        id         = iv_msgid
-                                                        number     = iv_msgno
-                                                        variable_1 = iv_msgv1
-                                                        variable_2 = iv_msgv2
-                                                        variable_3 = iv_msgv3
-                                                        variable_4 = iv_msgv4 ).
+        DATA(lo_item) = cl_bali_message_setter=>create( severity   = iv_symsg-msgty
+                                                        id         = iv_symsg-msgid
+                                                        number     = iv_symsg-msgno
+                                                        variable_1 = iv_symsg-msgv1
+                                                        variable_2 = iv_symsg-msgv2
+                                                        variable_3 = iv_symsg-msgv3
+                                                        variable_4 = iv_symsg-msgv4 ).
 
         me->lo_log_handle->add_item( lo_item ).
 
-        me->add_message_internal_log( iv_msgid = iv_msgid
-                                      iv_msgno = iv_msgno
-                                      iv_msgty = iv_msgty
-                                      iv_msgv1 = iv_msgv1
-                                      iv_msgv2 = iv_msgv2
-                                      iv_msgv3 = iv_msgv3
-                                      iv_msgv4 = iv_msgv4
+        me->add_message_internal_log( iv_symsg = iv_symsg
                                       ir_item  = lo_item ).
+
 
       CATCH cx_bali_runtime INTO DATA(lo_exception).
         RAISE EXCEPTION NEW zcx_cloud_logger_error( textid   = zcx_cloud_logger_error=>error_in_logging
@@ -515,8 +474,7 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
 
         me->lo_log_handle->add_item( lo_item ).
 
-        me->add_message_internal_log( iv_msgty = iv_msgty
-                                      iv_msgv1 = CONV #( iv_string )
+        me->add_message_internal_log( iv_symsg = VALUE #( msgty = iv_msgty msgv1 = CONV #( iv_string ) )
                                       ir_item  = lo_item ).
 
       CATCH cx_bali_runtime INTO DATA(lo_exception).
@@ -534,19 +492,18 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
 
     TRY.
 
-        DATA(lo_item) = cl_bali_message_setter=>create_from_sy( ).
+        DATA(lo_xco_message) = xco_cp=>sy->message( ).
+        DATA(lo_item)        = cl_bali_message_setter=>create_from_sy( ).
 
         lo_log_handle->add_item( lo_item ).
 
-        DATA(lo_xco_message) = xco_cp=>sy->message( ).
-
-        me->add_message_internal_log( iv_msgid = lo_xco_message->value-msgid
-                                      iv_msgno = lo_xco_message->value-msgno
-                                      iv_msgty = lo_xco_message->value-msgty
-                                      iv_msgv1 = lo_xco_message->value-msgv1
-                                      iv_msgv2 = lo_xco_message->value-msgv2
-                                      iv_msgv3 = lo_xco_message->value-msgv3
-                                      iv_msgv4 = lo_xco_message->value-msgv4
+        me->add_message_internal_log( iv_symsg = VALUE #( msgid = lo_xco_message->value-msgid
+                                                          msgno = lo_xco_message->value-msgno
+                                                          msgty = lo_xco_message->value-msgty
+                                                          msgv1 = lo_xco_message->value-msgv1
+                                                          msgv2 = lo_xco_message->value-msgv2
+                                                          msgv3 = lo_xco_message->value-msgv3
+                                                          msgv4 = lo_xco_message->value-msgv4 )
                                       ir_item  = lo_item
                                      ).
 

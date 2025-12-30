@@ -22,20 +22,20 @@ CLASS ltc_external_methods IMPLEMENTATION.
     TRY.
         DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_db_save = abap_false ).
 
-        lo_logger->log_message_add( iv_msgty = 'W'
-                                    iv_msgid = 'CL'
-                                    iv_msgno = '000'
-                                    iv_msgv1 = 'Messages for WBS:'
-                                    iv_msgv2 = 'KALISPERA'
-                                    iv_msgv3 = ''
-                                    iv_msgv4 = '' ).
+        lo_logger->log_message_add( iv_symsg = VALUE #( msgty = 'W'
+                                                        msgid = 'CL'
+                                                        msgno = '000'
+                                                        msgv1 = 'Test Message'
+                                                        msgv2 = ''
+                                                        msgv3 = ''
+                                                        msgv4 = '' ) ).
 
-        lo_logger->log_bapiret2_structure_add( VALUE #( id         = 'Z_AML'
-                                    type       = 'W'
-                                    number     = '002'
-                                    message_v1 = 'TEST' ) ).
+        lo_logger->log_bapiret2_structure_add( VALUE #( id         = 'Z_CLOUD_LOGGER'
+                                                        type       = 'W'
+                                                        number     = '002'
+                                                        message_v1 = 'TEST' ) ).
 
-        lo_logger->log_bapiret2_table_add( VALUE #( id     = 'Z_AML'
+        lo_logger->log_bapiret2_table_add( VALUE #( id     = 'Z_CLOUD_LOGGER'
                                                     type   = 'W'
                                                     number = '002'
                                                     ( message_v1 = 'BAPIS' )
@@ -102,21 +102,21 @@ CLASS ltc_external_methods IMPLEMENTATION.
     TRY.
         DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_db_save = abap_false ).
 
-        lo_logger->log_message_add(   iv_msgty = 'W'
-                                      iv_msgid = 'CL'
-                                      iv_msgno = '000'
-                                      iv_msgv1 = 'Messages for WBS:'
-                                      iv_msgv2 = 'KALISPERA'
-                                      iv_msgv3 = ''
-                                      iv_msgv4 = '' ).
+        lo_logger->log_message_add( iv_symsg = VALUE #( msgty = 'W'
+                                                msgid = 'CL'
+                                                msgno = '000'
+                                                msgv1 = 'Test Message 1'
+                                                msgv2 = ''
+                                                msgv3 = ''
+                                                msgv4 = '' ) ).
 
-        lo_logger->log_message_add(   iv_msgty = 'E'
-                                      iv_msgid = 'CL'
-                                      iv_msgno = '000'
-                                      iv_msgv1 = 'Messages for WBS:'
-                                      iv_msgv2 = 'KALISPERA'
-                                      iv_msgv3 = ''
-                                      iv_msgv4 = '' ).
+        lo_logger->log_message_add( iv_symsg = VALUE #( msgty = 'E'
+                                                        msgid = 'CL'
+                                                        msgno = '000'
+                                                        msgv1 = 'Test Message 2'
+                                                        msgv2 = ''
+                                                        msgv3 = ''
+                                                        msgv4 = '' ) ).
 
         cl_abap_unit_assert=>assert_true( lo_logger->log_contains_error( ) ).
         lo_logger->reset_appl_log( ).
@@ -132,21 +132,21 @@ CLASS ltc_external_methods IMPLEMENTATION.
     TRY.
         DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_db_save = abap_false ).
 
-        lo_logger->log_message_add(   iv_msgty = 'W'
-                                      iv_msgid = 'CL'
-                                      iv_msgno = '000'
-                                      iv_msgv1 = 'Messages for WBS:'
-                                      iv_msgv2 = 'KALISPERA'
-                                      iv_msgv3 = ''
-                                      iv_msgv4 = '' ).
+        lo_logger->log_message_add( iv_symsg = VALUE #( msgty = 'W'
+                                                msgid = 'CL'
+                                                msgno = '000'
+                                                msgv1 = 'Test Message 1'
+                                                msgv2 = ''
+                                                msgv3 = ''
+                                                msgv4 = '' ) ).
 
-        lo_logger->log_message_add(   iv_msgty = 'E'
-                                      iv_msgid = 'CL'
-                                      iv_msgno = '000'
-                                      iv_msgv1 = 'Messages for WBS:'
-                                      iv_msgv2 = 'KALISPERA'
-                                      iv_msgv3 = ''
-                                      iv_msgv4 = '' ).
+        lo_logger->log_message_add( iv_symsg = VALUE #( msgty = 'E'
+                                                        msgid = 'CL'
+                                                        msgno = '000'
+                                                        msgv1 = 'Test Message 2'
+                                                        msgv2 = ''
+                                                        msgv3 = ''
+                                                        msgv4 = '' ) ).
 
         cl_abap_unit_assert=>assert_true( lo_logger->log_contains_warning( ) ).
         lo_logger->reset_appl_log( ).
@@ -183,13 +183,13 @@ CLASS ltc_external_methods IMPLEMENTATION.
     TRY.
         DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_db_save = abap_false ).
 
-        lo_logger->log_message_add(   iv_msgty = 'W'
-                                      iv_msgid = 'CL'
-                                      iv_msgno = '000'
-                                      iv_msgv1 = 'Messages for WBS:'
-                                      iv_msgv2 = 'KALISPERA'
-                                      iv_msgv3 = ''
-                                      iv_msgv4 = '' ).
+        lo_logger->log_message_add( iv_symsg = VALUE #( msgty = 'W'
+                                                msgid = 'CL'
+                                                msgno = '000'
+                                                msgv1 = 'Test Message 1'
+                                                msgv2 = ''
+                                                msgv3 = ''
+                                                msgv4 = '' ) ).
 
         DATA(lv_result) = lo_logger->search_message( im_search = VALUE #( msgid = 'CL' msgno = '000' ) ).
 
@@ -207,13 +207,13 @@ CLASS ltc_external_methods IMPLEMENTATION.
     TRY.
         DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_db_save = abap_false ).
 
-        lo_logger->log_message_add(   iv_msgty = 'W'
-                                      iv_msgid = 'CL'
-                                      iv_msgno = '000'
-                                      iv_msgv1 = 'Messages for WBS:'
-                                      iv_msgv2 = 'KALISPERA'
-                                      iv_msgv3 = ''
-                                      iv_msgv4 = '' ).
+        lo_logger->log_message_add( iv_symsg = VALUE #( msgty = 'W'
+                                                msgid = 'CL'
+                                                msgno = '000'
+                                                msgv1 = 'Test Message 1'
+                                                msgv2 = ''
+                                                msgv3 = ''
+                                                msgv4 = '' ) ).
 
         DATA(lv_result) = lo_logger->search_message( im_search = VALUE #( msgid = 'CL' msgno = '003' ) ).
 
@@ -231,13 +231,13 @@ CLASS ltc_external_methods IMPLEMENTATION.
     TRY.
         DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_db_save = abap_false ).
 
-        lo_logger->log_message_add(   iv_msgty = 'W'
-                                      iv_msgid = 'CL'
-                                      iv_msgno = '000'
-                                      iv_msgv1 = 'Messages for WBS:'
-                                      iv_msgv2 = 'KALISPERA'
-                                      iv_msgv3 = ''
-                                      iv_msgv4 = '' ).
+        lo_logger->log_message_add( iv_symsg = VALUE #( msgty = 'W'
+                                                msgid = 'CL'
+                                                msgno = '000'
+                                                msgv1 = 'Test Message 1'
+                                                msgv2 = ''
+                                                msgv3 = ''
+                                                msgv4 = '' ) ).
 
         DATA(lv_result) = lo_logger->search_message( im_search = VALUE #( msgid = 'CL' msgno = '000' msgty = 'W' ) ).
 
