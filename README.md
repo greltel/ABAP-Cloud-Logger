@@ -23,9 +23,8 @@ The goal is to provide an easy-to-use logger that fits naturally into cloud-read
 To start logging, get an instance of the logger by providing your Application Log Object and Subobject (defined in `SLG0` or via Cloud API)(Optional).
 
 ```abap
-DATA(lo_logger) = zcl_cloud_logger=>get_instance(
-  iv_object    = 'Z_MY_OBJECT'
-  iv_subobject = 'Z_MY_SUBOBJECT').
+DATA(lo_logger) = zcl_cloud_logger=>get_instance( iv_object    = 'Z_MY_OBJECT'
+                                                  iv_subobject = 'Z_MY_SUBOBJECT' ).
 ```
 
 ### 2. Exception Add
@@ -87,22 +86,28 @@ DATA(lv_messages_exist) = lo_logger->log_contains_messages( ).
 
 DATA(lv_warning_exists) = lo_logger->log_contains_warning( ).
 
+DATA(lv_is_empty) = lo_logger->log_is_empty( ).
+```
+
+### 8. Get Log Handle
+
+```abap
 DATA(lv_handle)         = lo_logger->get_handle( ).
 
 DATA(lv_log_handle)     = lo_logger->get_log_handle( ).
 ```
 
-### 8. Save Application Log
+### 9. Save Application Log
 
 ```abap
 lo_logger->save_application_log( ).
 ```
 
-### 9. Merge Logs
+### 10. Merge Logs
 
-### 10. Search for a Specific Message
+### 11. Search for a Specific Message
 
-### 11. Reset Log
+### 12. Reset Log
 
 ## Design Goals/Features
 
