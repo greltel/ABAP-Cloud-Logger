@@ -41,6 +41,22 @@ TRY.
 ENDTRY.
 ```
 
+### 3. String Add
+
+```abap
+lo_logger->log_message_add( iv_msgty = 'W'
+                            iv_msgid = '00'
+                            iv_msgno = '001'
+                            iv_msgv1 = 'Message Add').
+```
+                            
+### 4. Message Add
+
+```abap
+lo_logger->log_string_add( iv_string = 'String Add'
+                           iv_msgty  = 'E'  ).
+```
+                           
 ## Design Goals/Features
 
 * Install via [ABAPGit](http://abapgit.org)
