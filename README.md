@@ -2,6 +2,15 @@
 ![ABAP 7.00+](https://img.shields.io/badge/ABAP-7.00%2B-brightgreen)
 [![Code Statistics](https://img.shields.io/badge/CodeStatistics-abaplint-blue)](https://abaplint.app/stats/greltel/ABAP-Cloud-Logger)
 
+# Table of contents
+1. [ABAP-Cloud-Logger](#ABAP-Cloud-Logger)
+2. [Prerequisites](#Prerequisites)
+3. [License](#License)
+4. [Contributors-Developers](#Contributors-Developers)
+5. [Motivation for Creating the Repository](#Motivation-for-Creating-the-Repository)
+6. [Usage Examples](#Usage-Examples)
+7. [Design Goals-Features](#Design-Goals-Features)
+
 # ABAP-Cloud-Logger
 ABAP Logger Following Clean Core Principles.ABAP Cloud Logger is a modern, lightweight, and Clean Core-compliant logging library for SAP S/4HANA and SAP BTP ABAP Environment.
 It acts as a fluent wrapper around the standard class `CL_BALI_LOG`, simplifying the Application Log API while ensuring strict adherence to **ABAP Cloud** development standards.
@@ -135,7 +144,7 @@ lo_logger->merge_logs( lo_new_logger ).
 lo_logger->reset_appl_log( ).
 ```
 
-## Design Goals/Features
+## Design Goals-Features
 
 * Install via [ABAPGit](http://abapgit.org)
 * ABAP Cloud/Clean Core compatibility.Passed SCI check variant S4HANA_READINESS_2023
