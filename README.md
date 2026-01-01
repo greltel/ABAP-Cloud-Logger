@@ -136,4 +136,5 @@ lo_logger->reset_appl_log( ).
 * Install via [ABAPGit](http://abapgit.org)
 * ABAP Cloud/Clean Core compatibility.Passed SCI check variant S4HANA_READINESS_2023
 * Based on [CL_BALI_LOG](https://help.sap.com/docs/btp/sap-business-technology-platform/cl-bali-log-interface-if-bali-log) which is released for Cloud Development (could also use XCO_CP_BAL)
-* Based on Multiton Design Pattern for efficient management of log instances.
+* Based on Multiton Design Pattern for efficient management of log instances
+* Unit Tested
