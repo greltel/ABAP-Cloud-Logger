@@ -5,7 +5,7 @@
 [![Code Statistics](https://img.shields.io/badge/CodeStatistics-abaplint-blue)](https://abaplint.app/stats/greltel/ABAP-Cloud-Logger)
 
 # Table of contents
-1. [ABAP-Cloud-Logger](#ABAP-Cloud-Logger)
+1. [ABAP Cloud Logger](#ABAP-Cloud-Logger)
 2. [Prerequisites](#Prerequisites)
 3. [License](#License)
 4. [Contributors-Developers](#Contributors-Developers)
