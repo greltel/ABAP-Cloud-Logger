@@ -88,7 +88,6 @@ lo_logger->log_bapiret2_structure_add( VALUE #( ) ) .
 ### 6. Advanced Data Logging (JSON)
 
 ```abap
-DATA: lt_users TYPE STANDARD TABLE OF zusers.
 SELECT * FROM t001 INTO TABLE @DATA(lt_company_codes) UP TO 10 ROWS.
 
 " Log the whole table as JSON
