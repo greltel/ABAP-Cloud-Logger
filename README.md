@@ -185,6 +185,7 @@ lo_logger->reset_appl_log( im_delete_from_db = abap_true ).
 ## Roadmap
 
  * Smart Imports: Enhanced `BAPIRET2` table import with intelligent filtering capabilities.
+ * Performance Stopwatch: Integrated timer utilities (start_timer / stop_timer) to easily measure and log the execution time of critical code sections.
  * Business Context: Implementation of "Sticky Tags" that are automatically appended to all subsequent messages within the instance context.
  * Notifications: Mechanism to automatically trigger notifications (Email or Technical Events) when a **Critical Error** is logged.
  * Async Performance: Implementation of asynchronous saving for high-volume scenarios to minimize runtime impact.
