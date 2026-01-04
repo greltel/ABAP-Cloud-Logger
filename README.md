@@ -85,7 +85,17 @@ lo_logger->log_bapiret2_table_add( VALUE #( ( ) ) ).
 lo_logger->log_bapiret2_structure_add( VALUE #( ) ) .
 ```
 
-### 6. Get Messages
+### 6. Advanced Data Logging (JSON)
+
+```abap
+DATA: lt_users TYPE STANDARD TABLE OF zusers.
+SELECT * FROM t001 INTO TABLE @DATA(lt_company_codes) UP TO 10 ROWS.
+
+" Log the whole table as JSON
+lo_logger->log_data_add( lt_company_codes )->save_application_log( ).
+```
+
+### 7. Get Messages
 
 ```abap
 DATA(lv_message_count)     = lo_logger->get_message_count( ).
@@ -99,7 +109,7 @@ DATA(lt_messages_flat)     = lo_logger->get_messages_flat( ).
 DATA(lt_messages_rap)      = lo_logger->get_messages_rap( ).
 ```
 
-### 7. Functional Methods
+### 8. Functional Methods
 
 ```abap
 DATA(lv_error_exists)   = lo_logger->log_contains_error( ).
@@ -111,7 +121,7 @@ DATA(lv_warning_exists) = lo_logger->log_contains_warning( ).
 DATA(lv_is_empty)       = lo_logger->log_is_empty( ).
 ```
 
-### 8. Get Log Handle
+### 9. Get Log Handle
 
 ```abap
 DATA(lv_handle)         = lo_logger->get_handle( ).
@@ -119,19 +129,19 @@ DATA(lv_handle)         = lo_logger->get_handle( ).
 DATA(lv_log_handle)     = lo_logger->get_log_handle( ).
 ```
 
-### 9. Save Application Log
+### 10. Save Application Log
 
 ```abap
 lo_logger->save_application_log( ).
 ```
 
-### 10. Search for a Specific Message
+### 11. Search for a Specific Message
 
 ```abap
 data(lv_specific_message_exists) = lo_logger->search_message( im_search = VALUE #( msgid = '00' ) ).
 ```
 
-### 11. Merge Logs
+### 12. Merge Logs
 
 ```abap
 "Get a New Log Instance
@@ -146,7 +156,7 @@ lo_new_logger->log_string_add( iv_string = 'New Logger String'
 lo_logger->merge_logs( lo_new_logger ).
 ```
 
-### 12. Reset Log
+### 13. Reset Log
 
 ```abap
 lo_logger->reset_appl_log( im_delete_from_db = abap_true ).
