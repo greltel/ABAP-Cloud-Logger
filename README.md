@@ -160,8 +160,8 @@ lo_logger->reset_appl_log( im_delete_from_db = abap_true ).
 ## 🗺️ Roadmap
 
  * Advanced Data Logging: Automatic serialization of complex ABAP data (Structures/Internal Tables) into JSON format via `log_data_add`.
- * Business Context: Implementation of "Sticky Tags" (e.g., Order ID) that are automatically appended to all subsequent messages within the instance context.
- * Smart Imports: Enhanced `BAPIRET2` table import with intelligent filtering capabilities (e.g., "Import only Errors", "Ignore Success").
+ * Business Context: Implementation of "Sticky Tags" that are automatically appended to all subsequent messages within the instance context.
+ * Smart Imports: Enhanced `BAPIRET2` table import with intelligent filtering capabilities.
  * Notifications: Mechanism to automatically trigger notifications (Email or Technical Events) when a **Critical Error** is logged.
- * Async Performance: Implementation of asynchronous saving ("Fire & Forget") for high-volume scenarios to minimize runtime impact.
+ * Async Performance: Implementation of asynchronous saving for high-volume scenarios to minimize runtime impact.
  * Visualization: Development of a RAP OData Service and a Fiori Dashboard for graphical log analysis and monitoring.
