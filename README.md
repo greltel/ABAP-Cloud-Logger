@@ -16,7 +16,8 @@
 5. [Motivation for Creating the Repository](#Motivation-for-Creating-the-Repository)
 6. [Usage Examples](#Usage-Examples)
 7. [Design Goals-Features](#Design-Goals-Features)
-8. [Roadmap](#Roadmap)
+8. [Changelog](#Changelog)
+9. [Roadmap](#Roadmap)
 
 # ABAP-Cloud-Logger
 ABAP Logger Following Clean Core Principles.ABAP Cloud Logger is a modern, lightweight, and Clean Core-compliant logging library for SAP S/4HANA and SAP BTP ABAP Environment.
@@ -158,6 +159,19 @@ lo_logger->reset_appl_log( im_delete_from_db = abap_true ).
 * Based on [CL_BALI_LOG](https://help.sap.com/docs/btp/sap-business-technology-platform/cl-bali-log-interface-if-bali-log) which is released for Cloud Development (could also use XCO_CP_BAL)
 * Based on Multiton Design Pattern for efficient management of log instances
 * Unit Tested
+
+## Changelog
+
+### [1.1.0] - 2026-01-04
+#### Added
+* JSON Serialization: New method `log_data_add` allows logging of any data type (Structures/Tables). Data is automatically converted to JSON format using the XCO library.
+
+### [1.0.0] - 2025-12-20
+#### Initial Release
+* Basic logging capabilities (Messages, Strings, Exceptions).
+* Fluent Interface support.
+* ABAP Cloud & Clean Core compliance.
+* Integration with SAP Application Log (BAL).
 
 ## Roadmap
 
