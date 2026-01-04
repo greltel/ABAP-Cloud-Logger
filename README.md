@@ -144,7 +144,7 @@ lo_logger->merge_logs( lo_new_logger ).
 ### 12. Reset Log
 
 ```abap
-lo_logger->reset_appl_log( ).
+lo_logger->reset_appl_log( im_delete_from_db = abap_true ).
 ```
 
 ## Design Goals-Features
