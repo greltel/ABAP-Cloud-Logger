@@ -1,4 +1,6 @@
 # ✅ Status: Initial Release (v1.0.0)
+> 🤝 **Open Source Contribution:** > This project is community-driven and **Open Source**! 🚀  
+> If you spot a bug 🐛 or have an idea for a cool enhancement 💡, your contributions are more than welcome. Feel free to open an **Issue** or submit a **Pull Request**.
 [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/greltel/ABAP-Point-Gate/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/greltel/ABAP-Cloud-Logger/blob/main/LICENSE)
 ![ABAP 7.00+](https://img.shields.io/badge/ABAP-7.00%2B-brightgreen)
@@ -155,4 +157,11 @@ lo_logger->reset_appl_log( im_delete_from_db = abap_true ).
 * Based on Multiton Design Pattern for efficient management of log instances
 * Unit Tested
 
-## Roadmap
+## 🗺️ Roadmap
+
+ * Advanced Data Logging:** Automatic serialization of complex ABAP data (Structures/Internal Tables) into JSON format via `log_data_add`.
+ * Business Context:** Implementation of "Sticky Tags" (e.g., Order ID) that are automatically appended to all subsequent messages within the instance context.
+ * Smart Imports:** Enhanced `BAPIRET2` table import with intelligent filtering capabilities (e.g., "Import only Errors", "Ignore Success").
+ * Notifications:** Mechanism to automatically trigger notifications (Email or Technical Events) when a **Critical Error** is logged.
+ * Async Performance:** Implementation of asynchronous saving ("Fire & Forget") for high-volume scenarios to minimize runtime impact.
+ * Visualization:** Development of a RAP OData Service and a Fiori Dashboard for graphical log analysis and monitoring.
