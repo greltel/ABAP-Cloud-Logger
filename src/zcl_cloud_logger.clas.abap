@@ -542,17 +542,25 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
 
   METHOD zif_cloud_logger~reset_appl_log.
 
-    CHECK me->lo_log_handle IS BOUND.
+    "Delete from Database
+    IF me->lo_log_handle IS BOUND AND im_delete_from_db EQ abap_true.
 
-    TRY.
-        cl_bali_log_db=>get_instance( )->delete_log( me->lo_log_handle ).
-      CATCH cx_bali_runtime INTO DATA(lo_exception).
-        DATA(lv_exception_text) = lo_exception->get_text( ).
-    ENDTRY.
+      TRY.
+          cl_bali_log_db=>get_instance( )->delete_log( me->lo_log_handle ).
+        CATCH cx_bali_runtime INTO DATA(lo_exception).
+          DATA(lv_exception_text) = lo_exception->get_text( ).
+      ENDTRY.
 
+    ENDIF.
+
+    "Handle Recreation
     TRY.
         CLEAR me->lo_log_handle.
         me->lo_log_handle = cl_bali_log=>create( ).
+
+        IF me->lo_header IS BOUND.
+          me->lo_log_handle->set_header( me->lo_header ).
+        ENDIF.
 
         CLEAR me->lt_log_messages.
 
@@ -575,11 +583,6 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
         cl_bali_log_db=>get_instance( )->save_log( log                        = me->lo_log_handle
                                                    use_2nd_db_connection      = im_use_2nd_db_connection
                                                    assign_to_current_appl_job = im_assign_to_current_appl_job ).
-
-        IF cl_system_transaction_state=>get_in_update_task( )        IS INITIAL AND
-           cl_system_transaction_state=>get_on_end_of_transaction( ) IS INITIAL.
-          COMMIT WORK.
-        ENDIF.
 
       CATCH cx_bali_runtime INTO DATA(lo_exception).
         RAISE EXCEPTION NEW zcx_cloud_logger_error( textid   = zcx_cloud_logger_error=>error_release

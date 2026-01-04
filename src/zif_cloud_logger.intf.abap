@@ -121,7 +121,9 @@ interface ZIF_CLOUD_LOGGER
   methods GET_MESSAGE_COUNT
     returning
       value(RE_COUNT) type INT4 .
-  methods RESET_APPL_LOG .
+  methods RESET_APPL_LOG
+    importing
+      !IM_DELETE_FROM_DB type ABAP_BOOL default ABAP_TRUE .
   methods LOG_IS_EMPTY
     returning
       value(RE_RESULT) type ABAP_BOOLEAN .

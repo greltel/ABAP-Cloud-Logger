@@ -18,7 +18,7 @@ CLASS ltc_external_methods DEFINITION FINAL
     METHODS search_message_found          FOR TESTING RAISING cx_static_check.
     METHODS search_message_not_found      FOR TESTING RAISING cx_static_check.
     METHODS search_message_with_type      FOR TESTING RAISING cx_static_check.
-    METHODS test_fluent_chaining          FOR TESTING RAISING cx_static_check.
+    METHODS test_fluent_chaining_1        FOR TESTING RAISING cx_static_check.
 ENDCLASS.
 
 
@@ -27,11 +27,12 @@ CLASS ltc_external_methods IMPLEMENTATION.
   METHOD setup.
 
     mo_log = zcl_cloud_logger=>get_instance(
-      iv_object    = 'Z_CLOUD_LOG'
-      iv_subobject = 'Z_CLOUD_LOG'
-      iv_db_save   = abap_false ).
+      iv_object    = 'Z_CLOUD_LOG_SAMPLE'
+      iv_subobject = 'SETUP'
+      iv_db_save   = abap_true ).
 
     mo_log->reset_appl_log( ).
+
   ENDMETHOD.
 
   METHOD teardown.
@@ -107,7 +108,7 @@ CLASS ltc_external_methods IMPLEMENTATION.
 
         mo_log->log_string_add( 'Message to save' ).
 
-        mo_log->save_application_log( ).
+        mo_log->save_application_log( im_use_2nd_db_connection = abap_false ).
 
         cl_abap_unit_assert=>assert_true( abap_true ).
 
@@ -122,7 +123,7 @@ CLASS ltc_external_methods IMPLEMENTATION.
 
     TRY.
 
-        DATA(lo_second_logger) = zcl_cloud_logger=>get_instance( iv_object = 'Z_CLOUD_LOG' iv_subobject = 'Z_CLOUD_LOG' iv_ext_number = '1234' iv_db_save = abap_false ).
+        DATA(lo_second_logger) = zcl_cloud_logger=>get_instance( iv_object = 'Z_CLOUD_LOG_SAMPLE' iv_subobject = 'SETUP' iv_ext_number = '1234' iv_db_save = abap_false ).
 
         MESSAGE e005(z_cloud_logger) INTO DATA(dummy2).
         lo_second_logger->log_syst_add( ).
@@ -276,13 +277,13 @@ CLASS ltc_external_methods IMPLEMENTATION.
     ENDTRY.
 
   ENDMETHOD.
-  METHOD test_fluent_chaining.
+  METHOD test_fluent_chaining_1.
 
-    mo_log->log_string_add( 'Message 1' )->log_string_add( 'Message 2' ).
+    mo_log->log_string_add( 'Message 1' )->log_string_add( 'Message 2' )->log_string_add( 'Message 3' ).
 
     cl_abap_unit_assert=>assert_equals(
       act = mo_log->get_message_count( )
-      exp = 2
+      exp = 3
       msg = 'Should have logged 2 messages via chaining'
     ).
   ENDMETHOD.
