@@ -158,7 +158,7 @@ lo_logger->reset_appl_log( im_delete_from_db = abap_true ).
 * Based on Multiton Design Pattern for efficient management of log instances
 * Unit Tested
 
-## 🗺️ Roadmap
+## Roadmap
 
  * Advanced Data Logging: Automatic serialization of complex ABAP data (Structures/Internal Tables) into JSON format via `log_data_add`.
  * Business Context: Implementation of "Sticky Tags" that are automatically appended to all subsequent messages within the instance context.
