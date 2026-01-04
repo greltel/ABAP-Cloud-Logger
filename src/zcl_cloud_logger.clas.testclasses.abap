@@ -19,6 +19,7 @@ CLASS ltc_external_methods DEFINITION FINAL
     METHODS search_message_not_found      FOR TESTING RAISING cx_static_check.
     METHODS search_message_with_type      FOR TESTING RAISING cx_static_check.
     METHODS test_fluent_chaining_1        FOR TESTING RAISING cx_static_check.
+    METHODS free_and_reset_log            FOR TESTING RAISING cx_static_check.
 ENDCLASS.
 
 
@@ -31,11 +32,12 @@ CLASS ltc_external_methods IMPLEMENTATION.
       iv_subobject = 'SETUP'
       iv_db_save   = abap_true ).
 
-    mo_log->reset_appl_log( ).
+    mo_log->reset_appl_log( im_delete_from_db = abap_true ).
 
   ENDMETHOD.
 
   METHOD teardown.
+    mo_log->free( ).
     FREE mo_log.
   ENDMETHOD.
 
@@ -286,5 +288,9 @@ CLASS ltc_external_methods IMPLEMENTATION.
       exp = 3
       msg = 'Should have logged 2 messages via chaining'
     ).
+  ENDMETHOD.
+  METHOD free_and_reset_log.
+    mo_log->free( ).
+    mo_log->reset_appl_log( ).
   ENDMETHOD.
 ENDCLASS.

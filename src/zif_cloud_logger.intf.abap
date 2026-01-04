@@ -141,4 +141,5 @@ interface ZIF_CLOUD_LOGGER
       !IM_SEARCH type SYMSG
     returning
       value(RE_RESULT) type ABAP_BOOLEAN .
+  methods FREE .
 endinterface.

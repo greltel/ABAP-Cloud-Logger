@@ -119,6 +119,9 @@ private section.
     returning
       value(RE_RESULT) type TY_FLAT_MESSAGE .
   methods CREATE_EMERGENCY_LOG .
+  methods CREATE_HEADER
+    returning
+      value(RE_HEADER) type ref to IF_BALI_HEADER_SETTER .
 ENDCLASS.
 
 
@@ -157,13 +160,7 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
         me->lv_enable_emergency_log = iv_enable_emergency_log.
 
         TRY.
-            me->lo_header = cl_bali_header_setter=>create( object      = me->lv_object
-                                                           subobject   = me->lv_subobject
-                                                           external_id = me->lv_ext_number
-            )->set_expiry( expiry_date       = COND #( WHEN iv_expiry_date IS SUPPLIED AND iv_expiry_date IS NOT INITIAL
-                                                       THEN iv_expiry_date
-                                                       ELSE CONV d( cl_abap_context_info=>get_system_date( ) + 5 ) )
-                           keep_until_expiry = abap_true ).
+            me->lo_header = create_header( ).
 
             me->lo_log_handle->set_header( lo_header ).
 
@@ -560,6 +557,17 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
 
         IF me->lo_header IS BOUND.
           me->lo_log_handle->set_header( me->lo_header ).
+        ELSE.
+
+          TRY.
+
+              me->lo_header = create_header( ).
+              me->lo_log_handle->set_header( me->lo_header ).
+
+            CATCH cx_bali_runtime.
+
+          ENDTRY.
+
         ENDIF.
 
         CLEAR me->lt_log_messages.
@@ -643,6 +651,38 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
         RAISE EXCEPTION NEW zcx_cloud_logger_error( textid   = zcx_cloud_logger_error=>error_in_emergency_log
                                                     previous = lo_xco_error ).
     ENDTRY.
+
+  ENDMETHOD.
+
+
+  METHOD create_header.
+
+    TRY.
+
+        re_header = cl_bali_header_setter=>create( object      = me->lv_object
+                                                   subobject   = me->lv_subobject
+                                                   external_id = me->lv_ext_number
+                    )->set_expiry( expiry_date       = COND #( WHEN me->lv_expiry_date IS NOT INITIAL
+                                                               THEN me->lv_expiry_date
+                                                               ELSE CONV d( cl_abap_context_info=>get_system_date( ) + 5 ) )
+                                   keep_until_expiry = abap_true ).
+
+      CATCH cx_bali_runtime cx_uuid_error INTO DATA(lo_exception).
+        DATA(lv_exception_text) = lo_exception->get_text( ).
+        RAISE EXCEPTION NEW zcx_cloud_logger_error( textid   = zcx_cloud_logger_error=>error_in_creation
+                                                    previous = lo_exception ).
+    ENDTRY.
+
+  ENDMETHOD.
+
+
+  METHOD zif_cloud_logger~free.
+
+    DELETE lt_logger_instances WHERE logger = me.
+
+    CLEAR: me->lo_log_handle,
+           me->lo_header,
+           me->lt_log_messages.
 
   ENDMETHOD.
 ENDCLASS.
