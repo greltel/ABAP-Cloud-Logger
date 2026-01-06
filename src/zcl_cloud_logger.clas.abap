@@ -211,7 +211,6 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
                     extnumber     = iv_ext_number
                     logger        = re_logger_instance ) INTO TABLE lt_logger_instances.
 
-
   ENDMETHOD.
 
 
