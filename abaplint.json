@@ -4,14 +4,14 @@
   },
   "dependencies": [
     {
-      "url": "https://github.com/abaplint/deps",
+      "url": "https://github.com/abapedia/steampunk-2302-api",
       "folder": "/deps",
       "files": "/src/**/*.*"
     }
   ],
   "syntax": {
-    "version": "v702",
-    "errorNamespace": "^(Z|Y|LCL_|TY_|LIF_)"
+    "version": "Cloud",
+    "errorNamespace": "."
   },
   "rules": {
     "exporting": true,
