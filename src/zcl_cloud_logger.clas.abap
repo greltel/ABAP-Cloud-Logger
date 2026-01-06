@@ -12,6 +12,8 @@ public section.
     for ZIF_CLOUD_LOGGER~C_MESSAGE_TYPE .
   aliases C_SELECT_OPTIONS
     for ZIF_CLOUD_LOGGER~C_SELECT_OPTIONS .
+  aliases FREE
+    for ZIF_CLOUD_LOGGER~FREE .
   aliases GET_HANDLE
     for ZIF_CLOUD_LOGGER~GET_HANDLE .
   aliases GET_LOG_HANDLE
@@ -36,6 +38,8 @@ public section.
     for ZIF_CLOUD_LOGGER~LOG_CONTAINS_MESSAGES .
   aliases LOG_CONTAINS_WARNING
     for ZIF_CLOUD_LOGGER~LOG_CONTAINS_WARNING .
+  aliases LOG_DATA_ADD
+    for ZIF_CLOUD_LOGGER~LOG_DATA_ADD .
   aliases LOG_EXCEPTION_ADD
     for ZIF_CLOUD_LOGGER~LOG_EXCEPTION_ADD .
   aliases LOG_IS_EMPTY
@@ -185,28 +189,28 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
 
   METHOD get_instance.
 
-    IF line_exists( lt_logger_instances[ log_object    = iv_object
-                                         log_subobject = iv_subobject
-                                         extnumber     = iv_ext_number ] ).
+    READ TABLE lt_logger_instances INTO DATA(ls_instance)
+      WITH TABLE KEY log_object    = iv_object
+                     log_subobject = iv_subobject
+                     extnumber     = iv_ext_number.
 
-      re_logger_instance = VALUE #( lt_logger_instances[ log_object = iv_object log_subobject = iv_subobject extnumber = iv_ext_number ]-logger OPTIONAL ).
-
-
-    ELSE.
-
-      re_logger_instance = NEW zcl_cloud_logger( iv_object                = iv_object
-                                                 iv_subobject             = iv_subobject
-                                                 iv_ext_number            = iv_ext_number
-                                                 iv_db_save               = iv_db_save
-                                                 iv_enable_emergency_log  = iv_enable_emergency_log
-                                                 iv_expiry_date           = iv_expiry_date  ).
-
-      APPEND VALUE #( log_object    = iv_object
-                      log_subobject = iv_subobject
-                      extnumber     = iv_ext_number
-                      logger        = re_logger_instance ) TO lt_logger_instances.
-
+    IF syst-subrc IS INITIAL.
+      re_logger_instance = ls_instance-logger.
+      RETURN.
     ENDIF.
+
+    re_logger_instance = NEW zcl_cloud_logger( iv_object                = iv_object
+                                               iv_subobject             = iv_subobject
+                                               iv_ext_number            = iv_ext_number
+                                               iv_db_save               = iv_db_save
+                                               iv_enable_emergency_log  = iv_enable_emergency_log
+                                               iv_expiry_date           = iv_expiry_date  ).
+
+    INSERT VALUE #( log_object    = iv_object
+                    log_subobject = iv_subobject
+                    extnumber     = iv_ext_number
+                    logger        = re_logger_instance ) INTO TABLE lt_logger_instances.
+
 
   ENDMETHOD.
 
@@ -297,7 +301,6 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
       CATCH cx_bali_runtime INTO DATA(lo_exception).
         DATA(lv_exception_text) = lo_exception->get_text( ).
     ENDTRY.
-
 
   ENDMETHOD.
 
@@ -429,7 +432,7 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
     CHECK me->lo_log_handle IS BOUND.
 
     TRY.
-        RETURN COND #( WHEN me->lo_log_handle->get_all_items( ) IS INITIAL THEN abap_true
+        RETURN COND #( WHEN me->get_message_count( ) IS INITIAL THEN abap_true
                        ELSE abap_false ).
 
       CATCH cx_bali_runtime INTO DATA(lo_exception).
@@ -678,11 +681,33 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
 
   METHOD zif_cloud_logger~free.
 
-    DELETE lt_logger_instances WHERE logger = me.
+    DELETE TABLE lt_logger_instances
+      WITH TABLE KEY log_object    = me->lv_object
+                     log_subobject = me->lv_subobject
+                     extnumber     = me->lv_ext_number.
 
     CLEAR: me->lo_log_handle,
            me->lo_header,
            me->lt_log_messages.
+
+  ENDMETHOD.
+
+
+  METHOD zif_cloud_logger~log_data_add.
+
+    TRY.
+
+        DATA(lv_json_string) = xco_cp_json=>data->from_abap( iv_data )->to_string( ).
+
+        me->log_string_add( iv_string = lv_json_string
+                            iv_msgty  = iv_msgty ).
+
+      CATCH cx_root INTO DATA(lo_error).
+        me->log_string_add( iv_string = |Error serializing data to JSON: { lo_error->get_text( ) }|
+                            iv_msgty  = 'E' ).
+    ENDTRY.
+
+    ro_logger = me.
 
   ENDMETHOD.
 ENDCLASS.

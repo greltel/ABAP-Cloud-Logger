@@ -3,7 +3,7 @@ interface ZIF_CLOUD_LOGGER
 
 
   types:
-    tt_bapiret2 TYPE STANDARD TABLE OF bapiret2 WITH DEFAULT KEY .
+    tt_bapiret2 TYPE STANDARD TABLE OF bapiret2 WITH EMPTY KEY .
   types:
     tt_rap_messages  TYPE STANDARD TABLE OF REF TO if_abap_behv_message WITH EMPTY KEY .
   types TY_FLAT_MESSAGE type STRING .
@@ -20,7 +20,9 @@ interface ZIF_CLOUD_LOGGER
       item      TYPE REF TO if_bali_item_setter,
     END OF t_log_messages .
   types:
-    tt_log_messages     TYPE STANDARD TABLE OF t_log_messages    WITH DEFAULT KEY .
+    tt_log_messages TYPE STANDARD TABLE OF t_log_messages WITH EMPTY KEY
+                    WITH NON-UNIQUE SORTED KEY key_search
+                    COMPONENTS symsg-msgid symsg-msgno symsg-msgty.
   types:
     BEGIN OF t_logger_instance,
       log_object    TYPE        cl_bali_header_setter=>ty_object,
@@ -29,7 +31,8 @@ interface ZIF_CLOUD_LOGGER
       logger        TYPE REF TO zif_cloud_logger,
     END OF t_logger_instance .
   types:
-    tt_logger_instances TYPE STANDARD TABLE OF t_logger_instance WITH KEY log_object log_subobject extnumber .
+    tt_logger_instances TYPE HASHED TABLE OF t_logger_instance
+                        WITH UNIQUE KEY log_object log_subobject extnumber.
 
   constants:
     BEGIN OF c_message_type,
@@ -94,6 +97,12 @@ interface ZIF_CLOUD_LOGGER
   methods LOG_BAPIRET2_STRUCTURE_ADD
     importing
       !IS_BAPIRET2 type BAPIRET2
+    returning
+      value(RO_LOGGER) type ref to ZIF_CLOUD_LOGGER .
+  methods LOG_DATA_ADD
+    importing
+      !IV_DATA type DATA
+      !IV_MSGTY type SYMSGTY default C_DEFAULT_MESSAGE_ATTRIBUTES-TYPE
     returning
       value(RO_LOGGER) type ref to ZIF_CLOUD_LOGGER .
   methods SAVE_APPLICATION_LOG

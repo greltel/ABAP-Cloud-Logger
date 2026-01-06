@@ -12,6 +12,8 @@ CLASS ltc_external_methods DEFINITION FINAL
     METHODS add_messages                  FOR TESTING RAISING cx_static_check.
     METHODS create_and_save_log           FOR TESTING RAISING cx_static_check.
     METHODS create_wrong_log              FOR TESTING RAISING cx_static_check.
+    METHODS empty_log                     FOR TESTING RAISING cx_static_check.
+    METHODS log_contain_messages          FOR TESTING RAISING cx_static_check.
     METHODS merge_logs                    FOR TESTING RAISING cx_static_check.
     METHODS check_error_in_log            FOR TESTING RAISING cx_static_check.
     METHODS check_warning_in_log          FOR TESTING RAISING cx_static_check.
@@ -20,6 +22,10 @@ CLASS ltc_external_methods DEFINITION FINAL
     METHODS search_message_with_type      FOR TESTING RAISING cx_static_check.
     METHODS test_fluent_chaining_1        FOR TESTING RAISING cx_static_check.
     METHODS free_and_reset_log            FOR TESTING RAISING cx_static_check.
+    METHODS test_log_data_as_json         FOR TESTING RAISING cx_static_check.
+    METHODS use_same_instance             FOR TESTING RAISING cx_static_check.
+    METHODS handle_not_initial            FOR TESTING RAISING cx_static_check.
+
 ENDCLASS.
 
 
@@ -81,6 +87,10 @@ CLASS ltc_external_methods IMPLEMENTATION.
 
         cl_abap_unit_assert=>assert_equals( exp = 7
                                             act = mo_log->get_message_count( ) ).
+
+        cl_abap_unit_assert=>assert_equals( exp = 7
+                                            act = lines( mo_log->get_messages_as_bapiret2( ) ) ).
+
         mo_log->reset_appl_log( ).
 
       CATCH zcx_cloud_logger_error INTO DATA(lo_exception).
@@ -279,6 +289,7 @@ CLASS ltc_external_methods IMPLEMENTATION.
     ENDTRY.
 
   ENDMETHOD.
+
   METHOD test_fluent_chaining_1.
 
     mo_log->log_string_add( 'Message 1' )->log_string_add( 'Message 2' )->log_string_add( 'Message 3' ).
@@ -286,11 +297,131 @@ CLASS ltc_external_methods IMPLEMENTATION.
     cl_abap_unit_assert=>assert_equals(
       act = mo_log->get_message_count( )
       exp = 3
-      msg = 'Should have logged 2 messages via chaining'
-    ).
+      msg = 'Should have logged 2 messages via chaining' ).
+
   ENDMETHOD.
+
   METHOD free_and_reset_log.
     mo_log->free( ).
     mo_log->reset_appl_log( ).
   ENDMETHOD.
+
+  METHOD test_log_data_as_json.
+
+    TYPES: BEGIN OF ty_dummy_data,
+             id     TYPE i,
+             name   TYPE string,
+             active TYPE abap_bool,
+           END OF ty_dummy_data.
+
+    DATA: lt_data TYPE STANDARD TABLE OF ty_dummy_data WITH EMPTY KEY.
+
+    lt_data = VALUE #( ( id = 100 name = 'Alpha' active = abap_true )
+                       ( id = 200 name = 'Beta'  active = abap_false ) ).
+
+    mo_log->log_data_add( lt_data ).
+
+    DATA(lt_msgs) = mo_log->get_messages_flat( ).
+
+    cl_abap_unit_assert=>assert_equals(
+      act = lines( lt_msgs )
+      exp = 1
+      msg = 'Should have logged exactly 1 message' ).
+
+    READ TABLE lt_msgs INTO DATA(lv_json_msg) INDEX 1.
+
+    cl_abap_unit_assert=>assert_char_cp(
+      act = lv_json_msg
+      exp = '*"id":100*'
+      msg = 'JSON should contain the first ID').
+
+    cl_abap_unit_assert=>assert_char_cp(
+      act = lv_json_msg
+      exp = '*"name":"Alpha"*'
+      msg = 'JSON should contain the first Name' ).
+
+    SELECT * FROM i_companycode INTO TABLE @DATA(lt_company_codes) UP TO 10 ROWS.
+
+    mo_log->log_data_add( lt_company_codes )->save_application_log( ).
+
+  ENDMETHOD.
+
+  METHOD empty_log.
+
+    TRY.
+
+        IF mo_log->log_is_empty( ) EQ abap_false.
+          cl_abap_unit_assert=>fail( ).
+        ELSE.
+          cl_abap_unit_assert=>assert_true( abap_true ).
+        ENDIF.
+
+      CATCH zcx_cloud_logger_error INTO DATA(lo_exception).
+        DATA(lv_exception_text) = lo_exception->get_text( ).
+        cl_abap_unit_assert=>fail( ).
+    ENDTRY.
+
+  ENDMETHOD.
+
+  METHOD log_contain_messages.
+
+    TRY.
+
+        IF mo_log->log_contains_messages( ) EQ abap_false.
+          cl_abap_unit_assert=>assert_true( abap_true ).
+        ELSE.
+          cl_abap_unit_assert=>fail( ).
+        ENDIF.
+
+      CATCH zcx_cloud_logger_error INTO DATA(lo_exception).
+        DATA(lv_exception_text) = lo_exception->get_text( ).
+        cl_abap_unit_assert=>fail( ).
+    ENDTRY.
+
+  ENDMETHOD.
+
+  METHOD use_same_instance.
+
+    TRY.
+
+        "ADD MESSAGES TO PREVIOUS INSTANCE
+        mo_log->log_bapiret2_table_add( VALUE #( id     = 'Z_CLOUD_LOGGER'
+                                            type   = 'W'
+                                            number = '002'
+                                            ( message_v1 = 'BAPIS' )
+                                            ( message_v1 = 'More' ) ) ).
+
+        mo_log->log_exception_add( iv_exception = NEW cx_sy_itab_line_not_found( ) ).
+
+        "GET SAME INSTANCE BACK
+        DATA(lr_same_instance) = zcl_cloud_logger=>get_instance( iv_object    = 'Z_CLOUD_LOG_SAMPLE'
+                                                                  iv_subobject = 'SETUP' ).
+
+        cl_abap_unit_assert=>assert_equals( exp = 3
+                                            act = lr_same_instance->get_message_count( ) ).
+
+        cl_abap_unit_assert=>assert_equals( exp = 3
+                                            act = lines( lr_same_instance->get_messages_rap( ) ) ).
+
+
+      CATCH zcx_cloud_logger_error INTO DATA(lo_exception).
+        DATA(lv_exception_text) = lo_exception->get_text( ).
+        cl_abap_unit_assert=>fail( ).
+    ENDTRY.
+
+  ENDMETHOD.
+
+  METHOD handle_not_initial.
+
+    TRY.
+
+        cl_abap_unit_assert=>assert_not_initial( mo_log->get_handle( ) ).
+
+      CATCH zcx_cloud_logger_error INTO DATA(lo_exception).
+        DATA(lv_exception_text) = lo_exception->get_text( ).
+        cl_abap_unit_assert=>fail( ).
+    ENDTRY.
+
+  ENDMETHOD.
+
 ENDCLASS.
