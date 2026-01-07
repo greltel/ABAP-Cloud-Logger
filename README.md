@@ -1,4 +1,4 @@
-# ✅ Status: Release (v1.1.0)
+# ✅ Status: Release (v1.2.0)
 > **Open Source Contribution:** This project is community-driven and **Open Source**! 🚀  
 > If you spot a bug or have an idea for a cool enhancement, your contributions are more than welcome. Feel free to open an **Issue** or submit a **Pull Request**.
 
