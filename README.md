@@ -171,6 +171,10 @@ lo_logger->reset_appl_log( im_delete_from_db = abap_true ).
 
 ## Changelog
 
+### [1.2.0] - 2026-01-07
+#### Added
+* Enhanced `log_bapiret2_table_add` with `iv_min_severity`. You can now filter logs directly during import (e.g., ignore all Success messages).
+  
 ### [1.1.0] - 2026-01-04
 #### Added
 * JSON Serialization: New method `log_data_add` allows logging of any data type (Structures/Tables). Data is automatically converted to JSON format using the XCO library.
@@ -184,7 +188,6 @@ lo_logger->reset_appl_log( im_delete_from_db = abap_true ).
 
 ## Roadmap
 
- * Smart Imports: Enhanced `BAPIRET2` table import with intelligent filtering capabilities.
  * Performance Stopwatch: Integrated timer utilities (start_timer / stop_timer) to easily measure and log the execution time of critical code sections.
  * Business Context: Implementation of "Sticky Tags" that are automatically appended to all subsequent messages within the instance context.
  * Notifications: Mechanism to automatically trigger notifications (Email or Technical Events) when a **Critical Error** is logged.
