@@ -77,10 +77,13 @@ lo_logger->log_message_add( iv_symsg = VALUE #( msgty = 'W'
 lo_logger->log_string_add( iv_string = 'String Add'
                            iv_msgty  = 'E'  ).
 ```
-### 5. BAPIRET2 Structure and Table Add
+### 5. BAPIRET2 Structure and Table Add with Smart Filtering
 
 ```abap
-lo_logger->log_bapiret2_table_add( VALUE #( ( ) ) ).
+lo_logger->log_bapiret2_table_add( 
+    it_bapiret2_t   = lt_return
+    iv_min_severity = 'E' 
+)->save( )
 
 lo_logger->log_bapiret2_structure_add( VALUE #( ) ) .
 ```
