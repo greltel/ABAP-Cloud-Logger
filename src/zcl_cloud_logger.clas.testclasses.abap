@@ -25,6 +25,7 @@ CLASS ltc_external_methods DEFINITION FINAL
     METHODS test_log_data_as_json         FOR TESTING RAISING cx_static_check.
     METHODS use_same_instance             FOR TESTING RAISING cx_static_check.
     METHODS handle_not_initial            FOR TESTING RAISING cx_static_check.
+    METHODS bapiret2_smart_filtering      FOR TESTING RAISING cx_static_check.
 
 ENDCLASS.
 
@@ -416,6 +417,42 @@ CLASS ltc_external_methods IMPLEMENTATION.
     TRY.
 
         cl_abap_unit_assert=>assert_not_initial( mo_log->get_handle( ) ).
+
+      CATCH zcx_cloud_logger_error INTO DATA(lo_exception).
+        DATA(lv_exception_text) = lo_exception->get_text( ).
+        cl_abap_unit_assert=>fail( ).
+    ENDTRY.
+
+  ENDMETHOD.
+
+  METHOD bapiret2_smart_filtering.
+
+    TRY.
+
+        " 1. Prepare Data: Success, Warning, Error
+        DATA: lt_bapi TYPE zif_cloud_logger=>tt_bapiret2.
+
+        lt_bapi = VALUE #(
+            ( type = 'S' message = 'Success Msg' id = 'Z_CLOUD_LOGGER' number = '002' )
+            ( type = 'W' message = 'Warning Msg' id = 'Z_CLOUD_LOGGER' number = '002' )
+            ( type = 'E' message = 'Error Msg'   id = 'Z_CLOUD_LOGGER' number = '002' )
+            ( type = 'A' message = 'Abort Msg'   id = 'Z_CLOUD_LOGGER' number = '002' )
+        ).
+
+        " 2. Act: Import ONLY Errors and above (Level 3+)
+        mo_log->log_bapiret2_table_add(
+            it_bapiret2_t   = lt_bapi
+            iv_min_severity = 'E'
+        ).
+
+        " 3. Assert: We expect only 'E' and 'A' (2 messages)
+        DATA(lt_msgs) = mo_log->get_messages_flat( ).
+
+        cl_abap_unit_assert=>assert_equals(
+          act = lines( lt_msgs )
+          exp = 2
+          msg = 'Filtering failed. Should only keep Error and Abort.'
+        ).
 
       CATCH zcx_cloud_logger_error INTO DATA(lo_exception).
         DATA(lv_exception_text) = lo_exception->get_text( ).

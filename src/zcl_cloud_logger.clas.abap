@@ -126,6 +126,11 @@ private section.
   methods CREATE_HEADER
     returning
       value(RE_HEADER) type ref to IF_BALI_HEADER_SETTER .
+  methods GET_SEVERITY_LEVEL
+    importing
+      !IV_MSGTY type SYMSGTY
+    returning
+      value(RV_LEVEL) type I .
 ENDCLASS.
 
 
@@ -334,8 +339,23 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
 
   METHOD zif_cloud_logger~log_bapiret2_table_add.
 
+    DATA(lv_min_level) = COND #( WHEN iv_min_severity IS NOT INITIAL THEN get_severity_level( iv_min_severity )
+                                 ELSE 0 ).
+
     LOOP AT it_bapiret2_t REFERENCE INTO DATA(lo_bapiret2_structure).
+
+      IF lv_min_level GT 0.
+
+        DATA(lv_current_level) = get_severity_level( lo_bapiret2_structure->*-type ).
+
+        IF lv_current_level LT lv_min_level.
+          CONTINUE.
+        ENDIF.
+
+      ENDIF.
+
       me->log_bapiret2_structure_add( lo_bapiret2_structure->* ).
+
     ENDLOOP.
 
     ro_logger = me.
@@ -707,6 +727,17 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
     ENDTRY.
 
     ro_logger = me.
+
+  ENDMETHOD.
+
+
+  METHOD get_severity_level.
+
+    rv_level = SWITCH #( iv_msgty
+                         WHEN zif_cloud_logger~c_message_type-abandon OR zif_cloud_logger~c_message_type-terminate THEN 4
+                         WHEN zif_cloud_logger~c_message_type-error THEN 3
+                         WHEN zif_cloud_logger~c_message_type-warning THEN 2
+                         ELSE 1 ).
 
   ENDMETHOD.
 ENDCLASS.

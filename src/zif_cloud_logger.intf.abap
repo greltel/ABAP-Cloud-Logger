@@ -22,7 +22,7 @@ interface ZIF_CLOUD_LOGGER
   types:
     tt_log_messages TYPE STANDARD TABLE OF t_log_messages WITH EMPTY KEY
                     WITH NON-UNIQUE SORTED KEY key_search
-                    COMPONENTS symsg-msgid symsg-msgno symsg-msgty.
+                    COMPONENTS symsg-msgid symsg-msgno symsg-msgty .
   types:
     BEGIN OF t_logger_instance,
       log_object    TYPE        cl_bali_header_setter=>ty_object,
@@ -32,7 +32,7 @@ interface ZIF_CLOUD_LOGGER
     END OF t_logger_instance .
   types:
     tt_logger_instances TYPE HASHED TABLE OF t_logger_instance
-                        WITH UNIQUE KEY log_object log_subobject extnumber.
+                        WITH UNIQUE KEY log_object log_subobject extnumber .
 
   constants:
     BEGIN OF c_message_type,
@@ -92,6 +92,7 @@ interface ZIF_CLOUD_LOGGER
   methods LOG_BAPIRET2_TABLE_ADD
     importing
       !IT_BAPIRET2_T type TT_BAPIRET2
+      !IV_MIN_SEVERITY type SYMSGTY optional
     returning
       value(RO_LOGGER) type ref to ZIF_CLOUD_LOGGER .
   methods LOG_BAPIRET2_STRUCTURE_ADD
