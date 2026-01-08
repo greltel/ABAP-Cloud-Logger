@@ -88,6 +88,9 @@ public section.
   PROTECTED SECTION.
 private section.
 
+  types:
+    t_severity_filter_range TYPE RANGE OF symsgty .
+
   class-data LT_LOGGER_INSTANCES type TT_LOGGER_INSTANCES .
   data LO_LOG_HANDLE type ref to IF_BALI_LOG .
   data LO_HEADER type ref to IF_BALI_HEADER_SETTER .
@@ -126,11 +129,11 @@ private section.
   methods CREATE_HEADER
     returning
       value(RE_HEADER) type ref to IF_BALI_HEADER_SETTER .
-  methods GET_SEVERITY_LEVEL
+  methods GET_SEVERITY_FILTER
     importing
       !IV_MSGTY type SYMSGTY
     returning
-      value(RV_LEVEL) type I .
+      value(RV_FILTER) type ZCL_CLOUD_LOGGER=>T_SEVERITY_FILTER_RANGE .
 ENDCLASS.
 
 
@@ -339,23 +342,11 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
 
   METHOD zif_cloud_logger~log_bapiret2_table_add.
 
-    DATA(lv_min_level) = COND #( WHEN iv_min_severity IS NOT INITIAL THEN get_severity_level( iv_min_severity )
-                                 ELSE 0 ).
+    DATA(lr_severity_filter) = COND #( WHEN iv_min_severity IS NOT INITIAL THEN get_severity_filter( iv_min_severity )
+                                       ELSE VALUE #( ) ).
 
-    LOOP AT it_bapiret2_t REFERENCE INTO DATA(lo_bapiret2_structure).
-
-      IF lv_min_level GT 0.
-
-        DATA(lv_current_level) = get_severity_level( lo_bapiret2_structure->*-type ).
-
-        IF lv_current_level LT lv_min_level.
-          CONTINUE.
-        ENDIF.
-
-      ENDIF.
-
+    LOOP AT it_bapiret2_t REFERENCE INTO DATA(lo_bapiret2_structure) WHERE type IN lr_severity_filter.
       me->log_bapiret2_structure_add( lo_bapiret2_structure->* ).
-
     ENDLOOP.
 
     ro_logger = me.
@@ -365,16 +356,13 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
 
   METHOD zif_cloud_logger~log_contains_error.
 
+    CLEAR re_result.
     CHECK me->lo_log_handle IS BOUND.
 
     TRY.
 
-        LOOP AT me->lo_log_handle->get_all_items( ) ASSIGNING FIELD-SYMBOL(<fs>).
-
-          IF <fs>-item->severity CA c_message_type-error_pattern.
-            RETURN abap_true.
-          ENDIF.
-
+        LOOP AT me->lo_log_handle->get_all_items( ) ASSIGNING FIELD-SYMBOL(<fs>) WHERE item->severity CA c_message_type-error_pattern.
+          RETURN abap_true.
         ENDLOOP.
 
       CATCH cx_bali_runtime INTO DATA(lo_exception).
@@ -386,6 +374,7 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
 
   METHOD zif_cloud_logger~log_contains_messages.
 
+    CLEAR re_result.
     CHECK me->lo_log_handle IS BOUND.
 
     TRY.
@@ -402,16 +391,13 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
 
   METHOD zif_cloud_logger~log_contains_warning.
 
+    CLEAR re_result.
     CHECK me->lo_log_handle IS BOUND.
 
     TRY.
 
-        LOOP AT me->lo_log_handle->get_all_items( ) ASSIGNING FIELD-SYMBOL(<fs>).
-
-          IF <fs>-item->severity CA c_message_type-warning_pattern.
-            RETURN abap_true.
-          ENDIF.
-
+        LOOP AT me->lo_log_handle->get_all_items( ) ASSIGNING FIELD-SYMBOL(<fs>) WHERE item->severity CA c_message_type-warning_pattern.
+          RETURN abap_true.
         ENDLOOP.
 
       CATCH cx_bali_runtime INTO DATA(lo_exception).
@@ -561,41 +547,26 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
 
   METHOD zif_cloud_logger~reset_appl_log.
 
-    "Delete from Database
-    IF me->lo_log_handle IS BOUND AND im_delete_from_db EQ abap_true.
-
-      TRY.
-          cl_bali_log_db=>get_instance( )->delete_log( me->lo_log_handle ).
-        CATCH cx_bali_runtime INTO DATA(lo_exception).
-          DATA(lv_exception_text) = lo_exception->get_text( ).
-      ENDTRY.
-
-    ENDIF.
-
-    "Handle Recreation
     TRY.
+
+        "Delete from Database
+        IF me->lo_log_handle IS BOUND AND im_delete_from_db EQ abap_true.
+          cl_bali_log_db=>get_instance( )->delete_log( me->lo_log_handle ).
+        ENDIF.
+
+        "Handle Recreation
         CLEAR me->lo_log_handle.
         me->lo_log_handle = cl_bali_log=>create( ).
 
-        IF me->lo_header IS BOUND.
-          me->lo_log_handle->set_header( me->lo_header ).
-        ELSE.
+        me->lo_header = COND #( WHEN me->lo_header IS BOUND THEN me->lo_header
+                                ELSE create_header( ) ).
 
-          TRY.
-
-              me->lo_header = create_header( ).
-              me->lo_log_handle->set_header( me->lo_header ).
-
-            CATCH cx_bali_runtime.
-
-          ENDTRY.
-
-        ENDIF.
+        me->lo_log_handle->set_header( me->lo_header ).
 
         CLEAR me->lt_log_messages.
 
-      CATCH cx_bali_runtime INTO lo_exception.
-        lv_exception_text = lo_exception->get_text( ).
+      CATCH cx_bali_runtime INTO DATA(lo_exception).
+        DATA(lv_exception_text) = lo_exception->get_text( ).
     ENDTRY.
 
   ENDMETHOD.
@@ -603,10 +574,7 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
 
   METHOD zif_cloud_logger~save_application_log.
 
-    IF me->lv_enable_emergency_log = abap_true.
-      RETURN.
-    ENDIF.
-
+    CHECK me->lv_enable_emergency_log NE abap_true.
     CHECK me->lo_log_handle IS BOUND AND me->lv_db_save EQ abap_true.
 
     TRY.
@@ -624,27 +592,27 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
 
   METHOD zif_cloud_logger~search_message.
 
-    DATA lr_search_class  TYPE RANGE OF symsgid.
-    DATA lr_search_number TYPE RANGE OF symsgno.
-    DATA lr_search_type   TYPE RANGE OF symsgty.
+    DATA lr_search_class  TYPE RANGE OF symsgid VALUE IS INITIAL.
+    DATA lr_search_number TYPE RANGE OF symsgno VALUE IS INITIAL.
+    DATA lr_search_type   TYPE RANGE OF symsgty VALUE IS INITIAL.
 
-    IF im_search-msgid IS NOT INITIAL.
-      lr_search_class = VALUE #( ( sign   = zcl_cloud_logger=>c_select_options-sign_include
-                                option = zcl_cloud_logger=>c_select_options-option_equal
-                                low    = im_search-msgid ) ).
-    ENDIF.
+    lr_search_class = COND #( WHEN im_search-msgid IS NOT INITIAL
+                              THEN VALUE #( ( sign   = zcl_cloud_logger=>c_select_options-sign_include
+                                             option = zcl_cloud_logger=>c_select_options-option_equal
+                                             low    = im_search-msgid ) )
+                              ELSE VALUE #( ) ).
 
-    IF im_search-msgno IS NOT INITIAL.
-      lr_search_number = VALUE #( ( sign  = zcl_cloud_logger=>c_select_options-sign_include
-                                option = zcl_cloud_logger=>c_select_options-option_equal
-                                low    = im_search-msgno ) ).
-    ENDIF.
+    lr_search_number = COND #( WHEN im_search-msgno IS NOT INITIAL
+                               THEN VALUE #( ( sign  = zcl_cloud_logger=>c_select_options-sign_include
+                                               option = zcl_cloud_logger=>c_select_options-option_equal
+                                               low    = im_search-msgno ) )
+                               ELSE VALUE #( ) ).
 
-    IF im_search-msgty IS NOT INITIAL.
-      lr_search_type = VALUE #( ( sign   = zcl_cloud_logger=>c_select_options-sign_include
-                               option = zcl_cloud_logger=>c_select_options-option_equal
-                               low    = im_search-msgty ) ).
-    ENDIF.
+    lr_search_type = COND #( WHEN im_search-msgty IS NOT INITIAL
+                             THEN VALUE #( ( sign   = zcl_cloud_logger=>c_select_options-sign_include
+                                             option = zcl_cloud_logger=>c_select_options-option_equal
+                                             low    = im_search-msgty ) )
+                             ELSE VALUE #( ) ).
 
     LOOP AT me->lt_log_messages INTO DATA(found_message) WHERE    symsg-msgid IN lr_search_class
                                                               AND symsg-msgno IN lr_search_number
@@ -659,9 +627,9 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
 
     CHECK me->lv_enable_emergency_log EQ abap_true.
 
-    IF me->lv_ext_number IS INITIAL.
-      me->lv_ext_number = xco_cp=>uuid( )->as( xco_cp_uuid=>format->c36 )->value.
-    ENDIF.
+    me->lv_ext_number = COND #( WHEN me->lv_ext_number IS INITIAL
+                                THEN  xco_cp=>uuid( )->as( xco_cp_uuid=>format->c36 )->value
+                                ELSE me->lv_ext_number ).
 
     TRY.
 
@@ -731,13 +699,28 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD get_severity_level.
+  METHOD get_severity_filter.
 
-    rv_level = SWITCH #( iv_msgty
-                         WHEN zif_cloud_logger~c_message_type-abandon OR zif_cloud_logger~c_message_type-terminate THEN 4
-                         WHEN zif_cloud_logger~c_message_type-error THEN 3
-                         WHEN zif_cloud_logger~c_message_type-warning THEN 2
-                         ELSE 1 ).
+    rv_filter = SWITCH #( iv_msgty
+                          WHEN zif_cloud_logger~c_message_type-abandon OR zif_cloud_logger~c_message_type-terminate
+                          THEN VALUE #( sign   = zcl_cloud_logger=>c_select_options-sign_include
+                                        option = zcl_cloud_logger=>c_select_options-option_equal
+                                       ( low = zif_cloud_logger~c_message_type-abandon )
+                                       ( low = zif_cloud_logger~c_message_type-terminate ) )
+                          WHEN zif_cloud_logger~c_message_type-error
+                          THEN VALUE #( sign   = zcl_cloud_logger=>c_select_options-sign_include
+                                        option = zcl_cloud_logger=>c_select_options-option_equal
+                                      ( low = zif_cloud_logger~c_message_type-error )
+                                      ( low = zif_cloud_logger~c_message_type-abandon )
+                                      ( low = zif_cloud_logger~c_message_type-terminate ) )
+                          WHEN zif_cloud_logger~c_message_type-warning
+                          THEN VALUE #( sign   = zcl_cloud_logger=>c_select_options-sign_include
+                                        option = zcl_cloud_logger=>c_select_options-option_equal
+                                      ( low = zif_cloud_logger~c_message_type-warning )
+                                      ( low = zif_cloud_logger~c_message_type-error )
+                                      ( low = zif_cloud_logger~c_message_type-abandon )
+                                      ( low = zif_cloud_logger~c_message_type-terminate ) )
+                          ELSE VALUE #( ) ).
 
   ENDMETHOD.
 ENDCLASS.
