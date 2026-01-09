@@ -26,6 +26,7 @@ CLASS ltc_external_methods DEFINITION FINAL
     METHODS use_same_instance             FOR TESTING RAISING cx_static_check.
     METHODS handle_not_initial            FOR TESTING RAISING cx_static_check.
     METHODS bapiret2_smart_filtering      FOR TESTING RAISING cx_static_check.
+    METHODS test_timer                    FOR TESTING RAISING cx_static_check.
 
 ENDCLASS.
 
@@ -458,6 +459,26 @@ CLASS ltc_external_methods IMPLEMENTATION.
         DATA(lv_exception_text) = lo_exception->get_text( ).
         cl_abap_unit_assert=>fail( ).
     ENDTRY.
+
+  ENDMETHOD.
+
+  METHOD test_timer.
+
+    mo_log->start_timer( ).
+
+    WAIT UP TO 1 SECONDS.
+
+    mo_log->stop_timer( 'Test Operation' ).
+
+    DATA(lt_msgs) = mo_log->get_messages_flat( ).
+
+    READ TABLE lt_msgs INTO DATA(lv_msg) INDEX 1.
+
+    IF lv_msg CS 'Test Operation' AND lt_msgs IS NOT INITIAL.
+      cl_abap_unit_assert=>assert_true( abap_true ).
+    ELSE.
+      cl_abap_unit_assert=>fail( ).
+    ENDIF.
 
   ENDMETHOD.
 

@@ -102,6 +102,7 @@ private section.
   data LV_EXT_NUMBER type CL_BALI_HEADER_SETTER=>TY_EXTERNAL_ID .
   data LV_EXPIRY_DATE type XSDDATE_D .
   data LV_ENABLE_EMERGENCY_LOG type ABAP_BOOLEAN .
+  DATA mv_timer_start TYPE timestampl.
 
   methods CONSTRUCTOR
     importing
@@ -721,6 +722,44 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
                                       ( low = zif_cloud_logger~c_message_type-abandon )
                                       ( low = zif_cloud_logger~c_message_type-terminate ) )
                           ELSE VALUE #( ) ).
+
+  ENDMETHOD.
+
+
+  METHOD zif_cloud_logger~start_timer.
+
+    GET TIME STAMP FIELD me->mv_timer_start.
+    ro_logger = me.
+
+  ENDMETHOD.
+
+
+  METHOD zif_cloud_logger~stop_timer.
+
+    IF me->mv_timer_start IS INITIAL.
+      me->log_string_add( iv_string = CONV #( TEXT-002 )
+                          iv_msgty  = zif_cloud_logger=>c_message_type-warning ).
+      ro_logger = me.
+      RETURN.
+    ENDIF.
+
+    GET TIME STAMP FIELD DATA(lv_now).
+
+    TRY.
+        DATA(lv_diff) = cl_abap_tstmp=>subtract( tstmp1 = lv_now
+                                                 tstmp2 = me->mv_timer_start ).
+
+        me->log_string_add( iv_string = |{ TEXT-003 } { iv_text } { TEXT-004 } { lv_diff } { TEXT-005 }|
+                            iv_msgty  = zif_cloud_logger=>c_message_type-information ).
+
+        CLEAR me->mv_timer_start.
+
+      CATCH cx_parameter_invalid_range cx_parameter_invalid_type.
+        me->log_string_add( iv_string = CONV #( TEXT-001 )
+                            iv_msgty  = zif_cloud_logger=>c_message_type-error ).
+    ENDTRY.
+
+    ro_logger = me.
 
   ENDMETHOD.
 ENDCLASS.

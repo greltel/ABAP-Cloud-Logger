@@ -137,6 +137,18 @@
      <LANGU>E</LANGU>
      <DESCRIPT>Structure of message variables</DESCRIPT>
     </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>START_TIMER</CMPNAME>
+     <SCONAME>RO_LOGGER</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Cloud Logger Interface</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>STOP_TIMER</CMPNAME>
+     <SCONAME>RO_LOGGER</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Cloud Logger Interface</DESCRIPT>
+    </SEOSUBCOTX>
    </DESCRIPTIONS_SUB>
   </asx:values>
  </asx:abap>

@@ -36,6 +36,7 @@ interface ZIF_CLOUD_LOGGER
 
   constants:
     BEGIN OF c_message_type,
+      information     TYPE symsgty VALUE 'I',
       error           TYPE symsgty VALUE 'E',
       success         TYPE symsgty VALUE 'S',
       warning         TYPE symsgty VALUE 'W',
@@ -152,4 +153,12 @@ interface ZIF_CLOUD_LOGGER
     returning
       value(RE_RESULT) type ABAP_BOOLEAN .
   methods FREE .
+  methods START_TIMER
+    returning
+      value(RO_LOGGER) type ref to ZIF_CLOUD_LOGGER .
+  methods STOP_TIMER
+    importing
+      !IV_TEXT type STRING optional
+    returning
+      value(RO_LOGGER) type ref to ZIF_CLOUD_LOGGER .
 endinterface.
