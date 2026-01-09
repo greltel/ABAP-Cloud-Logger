@@ -164,6 +164,18 @@ lo_logger->merge_logs( lo_new_logger ).
 lo_logger->reset_appl_log( im_delete_from_db = abap_true ).
 ```
 
+### 14. Timer
+
+```abap
+" 1. Start the stopwatch
+lo_logger->start_timer( ).
+
+SELECT FROM.....
+
+" 2. Stop and log the duration automatically
+lo_logger->stop_timer( 'Test Timer' ).
+```
+
 ## Design Goals-Features
 
 * Install via [ABAPGit](http://abapgit.org)
