@@ -1,8 +1,8 @@
-# ✅ Status: Release (v1.2.0)
+# ✅ Status: Release (v1.3.0)
 > **Open Source Contribution:** This project is community-driven and **Open Source**! 🚀  
 > If you spot a bug or have an idea for a cool enhancement, your contributions are more than welcome. Feel free to open an **Issue** or submit a **Pull Request**.
 
-![Version](https://img.shields.io/badge/version-1.2.0-blue) 
+![Version](https://img.shields.io/badge/version-1.3.0-blue) 
 ![ABAP Cloud](https://img.shields.io/badge/ABAP-Cloud%20Ready-green)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/greltel/ABAP-Cloud-Logger/blob/main/LICENSE)
 ![ABAP 7.00+](https://img.shields.io/badge/ABAP-7.00%2B-brightgreen)
@@ -174,6 +174,10 @@ lo_logger->reset_appl_log( im_delete_from_db = abap_true ).
 
 ## Changelog
 
+### [1.3.0] - 2026-01-09
+#### Added
+* Added `start_timer` and `stop_timer` methods for runtime measurement.
+
 ### [1.2.0] - 2026-01-07
 #### Added
 * Enhanced `log_bapiret2_table_add` with `iv_min_severity`. You can now filter logs directly during import (e.g., ignore all Success messages).
@@ -191,7 +195,6 @@ lo_logger->reset_appl_log( im_delete_from_db = abap_true ).
 
 ## Roadmap
 
- * Performance Stopwatch: Integrated timer utilities (start_timer / stop_timer) to easily measure and log the execution time of critical code sections.
  * Business Context: Implementation of "Sticky Tags" that are automatically appended to all subsequent messages within the instance context.
  * Notifications: Mechanism to automatically trigger notifications (Email or Technical Events) when a **Critical Error** is logged.
  * Async Performance: Implementation of asynchronous saving for high-volume scenarios to minimize runtime impact.
