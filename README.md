@@ -170,9 +170,10 @@ lo_logger->reset_appl_log( im_delete_from_db = abap_true ).
 " 1. Start the stopwatch
 lo_logger->start_timer( ).
 
-SELECT FROM.....
+" 2. Execute a code block
+"SELECT FROM.....
 
-" 2. Stop and log the duration automatically
+" 3. Stop and log the duration automatically
 lo_logger->stop_timer( 'Test Timer' ).
 ```
 
