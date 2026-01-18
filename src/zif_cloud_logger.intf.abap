@@ -161,4 +161,7 @@ interface ZIF_CLOUD_LOGGER
       !IV_TEXT type STRING optional
     returning
       value(RO_LOGGER) type ref to ZIF_CLOUD_LOGGER .
+  methods DISPLAY
+    importing
+      !IO_VIEWER type ref to ZIF_CLOUD_LOGGER_VIEWER .
 endinterface.

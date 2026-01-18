@@ -762,4 +762,11 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
     ro_logger = me.
 
   ENDMETHOD.
+
+
+  METHOD zif_cloud_logger~display.
+
+    io_viewer->view( me ).
+
+  ENDMETHOD.
 ENDCLASS.
