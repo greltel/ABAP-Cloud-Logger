@@ -1,8 +1,8 @@
-# ✅ Status: Release (v1.3.0)
+# ✅ Status: Release (v1.4.0)
 > **Open Source Contribution:** This project is community-driven and **Open Source**! 🚀  
 > If you spot a bug or have an idea for a cool enhancement, your contributions are more than welcome. Feel free to open an **Issue** or submit a **Pull Request**.
 
-![Version](https://img.shields.io/badge/version-1.3.0-blue) 
+![Version](https://img.shields.io/badge/version-1.4.0-blue) 
 ![ABAP Cloud](https://img.shields.io/badge/ABAP-Cloud%20Ready-green)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/greltel/ABAP-Cloud-Logger/blob/main/LICENSE)
 ![ABAP 7.00+](https://img.shields.io/badge/ABAP-7.00%2B-brightgreen)
@@ -177,6 +177,13 @@ lo_logger->start_timer( ).
 lo_logger->stop_timer( 'Test Timer' ).
 ```
 
+### 14. Viewer
+
+```abap
+lo_logger->display( NEW zcl_cloud_logger_view_alv( ) ).
+```
+
+
 ## Design Goals-Features
 
 * Install via [ABAPGit](http://abapgit.org)
@@ -186,6 +193,10 @@ lo_logger->stop_timer( 'Test Timer' ).
 * Unit Tested
 
 ## Changelog
+
+### [1.4.0] - 2026-01-18
+#### Added
+* Added support for custom Log Viewers via the `display()` method, enabling UI-agnostic log visualization (Strategy Pattern)
 
 ### [1.3.0] - 2026-01-09
 #### Added
@@ -209,6 +220,7 @@ lo_logger->stop_timer( 'Test Timer' ).
 ## Roadmap
 
  * Business Context: Implementation of "Sticky Tags" that are automatically appended to all subsequent messages within the instance context.
+ * Log Distribution Channels: Implementation of a `Sender` interface to route logs to external platforms
  * Notifications: Mechanism to automatically trigger notifications (Email or Technical Events) when a **Critical Error** is logged.
  * Async Performance: Implementation of asynchronous saving for high-volume scenarios to minimize runtime impact.
  * Visualization: Development of a RAP OData Service and a Fiori Dashboard for graphical log analysis and monitoring.
