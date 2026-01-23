@@ -505,7 +505,7 @@ CLASS ltc_external_methods IMPLEMENTATION.
     cl_abap_unit_assert=>assert_char_cp( act = lv_msg3 exp = '*[Order 200] Stock error*' ).
 
     READ TABLE lt_msgs INTO DATA(lv_msg4) INDEX 4.
-    IF lv_msg4 CS '['. " Δεν πρέπει να έχει αγκύλες
+    IF lv_msg4 CS '['.
          cl_abap_unit_assert=>fail( 'Context was not cleared properly' ).
     ENDIF.
 
