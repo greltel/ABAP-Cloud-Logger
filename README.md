@@ -186,7 +186,7 @@ lo_logger->display( NEW zcl_cloud_logger_view_alv( ) ).
 ### 15. Sticky Tags
 
 ```abap
-lo_logger->set_context( 'Order 100' )..
+lo_logger->set_context( 'Order 100' ).
 lo_logger->log_string_add( 'Price checked' )."[Order 100] Price checked logged
 lo_logger->clear_context( ).
 ```
