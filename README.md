@@ -1,8 +1,8 @@
-# ✅ Status: Release (v1.4.0)
+# ✅ Status: Release (v1.5.0)
 > **Open Source Contribution:** This project is community-driven and **Open Source**! 🚀  
 > If you spot a bug or have an idea for a cool enhancement, your contributions are more than welcome. Feel free to open an **Issue** or submit a **Pull Request**.
 
-![Version](https://img.shields.io/badge/version-1.4.0-blue) 
+![Version](https://img.shields.io/badge/version-1.5.0-blue) 
 ![ABAP Cloud](https://img.shields.io/badge/ABAP-Cloud%20Ready-green)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/greltel/ABAP-Cloud-Logger/blob/main/LICENSE)
 ![ABAP 7.00+](https://img.shields.io/badge/ABAP-7.00%2B-brightgreen)
@@ -183,6 +183,13 @@ lo_logger->stop_timer( 'Test Timer' ).
 lo_logger->display( NEW zcl_cloud_logger_view_alv( ) ).
 ```
 
+### 15. Sticky Tags
+
+```abap
+lo_logger->set_context( 'Order 100' )..
+lo_logger->log_string_add( 'Price checked' )."[Order 100] Price checked logged
+lo_logger->clear_context( ).
+```
 
 ## Design Goals-Features
 
@@ -191,8 +198,14 @@ lo_logger->display( NEW zcl_cloud_logger_view_alv( ) ).
 * Based on [CL_BALI_LOG](https://help.sap.com/docs/btp/sap-business-technology-platform/cl-bali-log-interface-if-bali-log) which is released for Cloud Development (could also use XCO_CP_BAL)
 * Based on Multiton Design Pattern for efficient management of log instances
 * Unit Tested
+* Fluent Interface and method chaining
+* Separate logging from viewing using the Strategy Pattern
 
 ## Changelog
+
+### [1.5.0] - 2026-01-23
+#### Added
+ * Added "Sticky Tags" that are automatically appended to all subsequent messages within the instance context. Use set_context and clear_context methods
 
 ### [1.4.0] - 2026-01-18
 #### Added
@@ -219,7 +232,6 @@ lo_logger->display( NEW zcl_cloud_logger_view_alv( ) ).
 
 ## Roadmap
 
- * Business Context: Implementation of "Sticky Tags" that are automatically appended to all subsequent messages within the instance context.
  * Log Distribution Channels: Implementation of a `Sender` interface to route logs to external platforms
  * Notifications: Mechanism to automatically trigger notifications (Email or Technical Events) when a **Critical Error** is logged.
  * Async Performance: Implementation of asynchronous saving for high-volume scenarios to minimize runtime impact.
