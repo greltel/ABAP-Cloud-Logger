@@ -103,6 +103,7 @@ private section.
   data LV_EXPIRY_DATE type XSDDATE_D .
   data LV_ENABLE_EMERGENCY_LOG type ABAP_BOOLEAN .
   DATA mv_timer_start TYPE timestampl.
+  DATA mv_context TYPE string.
 
   methods CONSTRUCTOR
     importing
@@ -483,12 +484,15 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
 
     TRY.
 
+        DATA(lv_final_string) = COND #( WHEN me->mv_context IS NOT INITIAL THEN |[{ me->mv_context }] { iv_string }|
+                                        ELSE iv_string ).
+
         DATA(lo_item) = cl_bali_free_text_setter=>create( severity = iv_msgty
-                                                          text     = CONV #( iv_string ) ).
+                                                          text     = CONV #( lv_final_string ) ).
 
         me->lo_log_handle->add_item( lo_item ).
 
-        me->add_message_internal_log( iv_symsg = VALUE #( msgty = iv_msgty msgv1 = CONV #( iv_string ) )
+        me->add_message_internal_log( iv_symsg = VALUE #( msgty = iv_msgty msgv1 = CONV #( lv_final_string ) )
                                       ir_item  = lo_item ).
 
         ro_logger = me.
@@ -769,4 +773,16 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
     io_viewer->view( me ).
 
   ENDMETHOD.
+
+
+  METHOD zif_cloud_logger~clear_context.
+    CLEAR me->mv_context.
+    ro_logger = me.
+  ENDMETHOD.
+
+
+  method ZIF_CLOUD_LOGGER~SET_CONTEXT.
+    me->mv_context = iv_context.
+    ro_logger = me.
+  endmethod.
 ENDCLASS.

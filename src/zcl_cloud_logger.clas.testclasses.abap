@@ -27,6 +27,7 @@ CLASS ltc_external_methods DEFINITION FINAL
     METHODS handle_not_initial            FOR TESTING RAISING cx_static_check.
     METHODS bapiret2_smart_filtering      FOR TESTING RAISING cx_static_check.
     METHODS test_timer                    FOR TESTING RAISING cx_static_check.
+    METHODS test_sticky_context           FOR TESTING RAISING cx_static_check.
 
 ENDCLASS.
 
@@ -478,6 +479,34 @@ CLASS ltc_external_methods IMPLEMENTATION.
       cl_abap_unit_assert=>assert_true( abap_true ).
     ELSE.
       cl_abap_unit_assert=>fail( ).
+    ENDIF.
+
+  ENDMETHOD.
+
+  METHOD test_sticky_context.
+
+    mo_log->set_context( 'Order 100' ).
+
+    mo_log->log_string_add( 'Validation started' ).
+    mo_log->log_string_add( 'Price checked' ).
+
+    mo_log->set_context( 'Order 200' ).
+    mo_log->log_string_add( 'Stock error' ).
+
+    mo_log->clear_context( ).
+    mo_log->log_string_add( 'Process finished' ).
+
+    DATA(lt_msgs) = mo_log->get_messages_flat( ).
+
+    READ TABLE lt_msgs INTO DATA(lv_msg1) INDEX 1.
+    cl_abap_unit_assert=>assert_char_cp( act = lv_msg1 exp = '*[Order 100] Validation started*' ).
+
+    READ TABLE lt_msgs INTO DATA(lv_msg3) INDEX 3.
+    cl_abap_unit_assert=>assert_char_cp( act = lv_msg3 exp = '*[Order 200] Stock error*' ).
+
+    READ TABLE lt_msgs INTO DATA(lv_msg4) INDEX 4.
+    IF lv_msg4 CS '['. " Δεν πρέπει να έχει αγκύλες
+         cl_abap_unit_assert=>fail( 'Context was not cleared properly' ).
     ENDIF.
 
   ENDMETHOD.

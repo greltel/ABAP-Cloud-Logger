@@ -164,4 +164,12 @@ interface ZIF_CLOUD_LOGGER
   methods DISPLAY
     importing
       !IO_VIEWER type ref to ZIF_CLOUD_LOGGER_VIEWER .
+  methods SET_CONTEXT
+    importing
+      !IV_CONTEXT type STRING
+    returning
+      value(RO_LOGGER) type ref to ZIF_CLOUD_LOGGER .
+  methods CLEAR_CONTEXT
+    returning
+      value(RO_LOGGER) type ref to ZIF_CLOUD_LOGGER .
 endinterface.
