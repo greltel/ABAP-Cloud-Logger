@@ -1,0 +1,27 @@
+{
+  "input_folder": "src",
+  "input_filter": [
+    "zcl_cloud_logger.clas",
+    "zcl_cloud_logger_view_alv",
+    "zcx_cloud_logger_error",
+    "zcx_cloud_logger_message",
+    "zif_cloud_logger",
+    "z_cloud_logger.msag",
+    "package.devc"
+  ],
+  "output_folder": "output",
+  "libs": [
+    {
+      "url": "https://github.com/abapedia/steampunk-2302-api"
+    }
+  ],
+  "write_unit_tests": true,
+  "write_source_map": true,
+  "options": {
+    "ignoreSyntaxCheck": false,
+    "addFilenames": true,
+    "addCommonJS": true,
+    "unknownTypes": "runtimeError",
+    "skipReset": true
+  }
+}
