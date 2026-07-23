@@ -1,5 +1,5 @@
 {
-  "input_folder": "src",
+  "input_folder": "src_transpile",
   "input_filter": [
     "zcl_cloud_logger.clas",
     "zcl_cloud_logger_view_alv",
