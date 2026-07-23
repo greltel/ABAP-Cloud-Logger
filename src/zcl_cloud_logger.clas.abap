@@ -412,7 +412,15 @@ CLASS ZCL_CLOUD_LOGGER IMPLEMENTATION.
 
 
   METHOD zif_cloud_logger~get_message_count.
-    count = lines( log_messages ).
+
+    IF msgty IS INITIAL.
+      count = lines( log_messages ).
+      RETURN.
+    ENDIF.
+    LOOP AT log_messages TRANSPORTING NO FIELDS WHERE type = msgty.
+      count += 1.
+    ENDLOOP.
+
   ENDMETHOD.
 
 

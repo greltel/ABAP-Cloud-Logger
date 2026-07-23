@@ -43,7 +43,7 @@ CLASS ltcl_external_methods DEFINITION FINAL
     METHODS chain_initial_bapiret2_safe    FOR TESTING RAISING cx_static_check.
     METHODS chain_unbound_handle_safe      FOR TESTING RAISING cx_static_check.
     METHODS get_instance_conflict_trim     FOR TESTING RAISING cx_static_check.
-
+    METHODS count_messages_by_type FOR TESTING RAISING cx_static_check.
 
 ENDCLASS.
 
@@ -830,6 +830,29 @@ CLASS ltcl_external_methods IMPLEMENTATION.
       CATCH zcx_cloud_logger_error.
         " expected
     ENDTRY.
+
+  ENDMETHOD.
+
+  METHOD count_messages_by_type.
+
+    mo_log->log_string_add( string = 'warning one' msgty = 'W' ).
+    mo_log->log_string_add( string = 'error one'   msgty = 'E' ).
+    mo_log->log_string_add( string = 'error two'   msgty = 'E' ).
+
+    cl_abap_unit_assert=>assert_equals(
+      exp = 3
+      act = mo_log->get_message_count( )
+      msg = 'Unfiltered count should return all messages' ).
+
+    cl_abap_unit_assert=>assert_equals(
+      exp = 2
+      act = mo_log->get_message_count( 'E' )
+      msg = 'Filtered count should return only errors' ).
+
+    cl_abap_unit_assert=>assert_equals(
+      exp = 0
+      act = mo_log->get_message_count( 'A' )
+      msg = 'Filtered count for absent type should be zero' ).
 
   ENDMETHOD.
 
