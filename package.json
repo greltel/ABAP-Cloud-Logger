@@ -1,0 +1,15 @@
+{
+  "name": "abap-cloud-logger",
+  "version": "1.0.0",
+  "private": "true",
+  "description": "abap-cloud_logger",
+  "scripts": {
+    "test": "rimraf output && abap_transpile && echo RUNNING && node output/index.mjs"
+  },
+  "devDependencies": {
+    "@abaplint/cli": "^2.120.5",
+    "@abaplint/transpiler": "^2.13.45",
+    "@abaplint/runtime": "^2.13.45",
+    "rimraf": "^6.1.3"
+  }
+}
