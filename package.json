@@ -8,7 +8,7 @@
   },
   "devDependencies": {
     "@abaplint/cli": "^2.120.5",
-    "@abaplint/transpiler": "^2.13.45",
+    "@abaplint/transpiler-cli": "^2.13.45",
     "@abaplint/runtime": "^2.13.45",
     "rimraf": "^6.1.3"
   }
