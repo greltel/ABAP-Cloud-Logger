@@ -1,15 +1,25 @@
 {
   "name": "abap-cloud-logger",
   "version": "1.0.0",
-  "private": "true",
-  "description": "abap-cloud_logger",
+  "private": true,
+  "license": "MIT",
+  "description": "Off-stack ABAP project: abaplint + transpiler unit tests",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
-    "test": "rimraf output && abap_transpile && echo RUNNING && node output/index.mjs"
+    "lint": "abaplint",
+    "lint:fix": "abaplint --fix",
+    "transpile": "rimraf output && abap_transpile",
+    "pretest": "npm run transpile",
+    "test": "node output/index.mjs",
+    "check": "npm run lint && npm test"
   },
   "devDependencies": {
-    "@abaplint/cli": "^2.120.5",
-    "@abaplint/transpiler-cli": "^2.13.45",
+    "@abaplint/cli": "^2.120.41",
+    "@abaplint/database-sqlite": "^2.13.40",
     "@abaplint/runtime": "^2.13.45",
+    "@abaplint/transpiler-cli": "^2.13.45",
     "rimraf": "^6.1.3"
   }
 }
